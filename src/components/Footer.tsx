@@ -7,15 +7,12 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { name: 'GitHub', href: 'https://github.com/luispulido' },
-    { name: 'Twitter', href: 'https://twitter.com/luispulido' },
-    { name: 'LinkedIn', href: 'https://linkedin.com/in/luispulido' }
+    { name: 'GitHub', href: 'https://github.com/luispulido' }
   ];
   
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Projects', href: '/projects' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' }
   ];
@@ -31,7 +28,7 @@ const Footer = () => {
           >
             <h3 className="text-lg font-bold text-text mb-4">Luis Pulido</h3>
             <p className="text-textMuted text-sm mb-4">
-              Software engineer and technical writer focused on building robust systems and sharing knowledge.
+              Software engineer focused on building robust systems.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link) => (
