@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Luis Pulido Blog
+
+A minimalistic, dark-mode blog focused on technical topics like networking, AI, and science.
+
+## Overview
+
+This is a personal blog built with Next.js and TypeScript, designed to be:
+- Minimalistic and distraction-free
+- Easy to maintain
+- Fast-loading and SEO-friendly
+- Dark-mode only with an ultradark color palette
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Styling**: Tailwind CSS
+- **Content**: Markdown with gray-matter and remark
+- **Type Safety**: TypeScript
+- **Deployment**: Static export (hostable on Netlify, Vercel, GitHub Pages, etc.)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.17.0 or later
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/lpolish/luispulido.com.git
+   cd luispulido.com
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Adding Content
+
+### Creating Blog Posts
+
+1. Create a new Markdown file in `src/content/posts/` with a filename that will become the URL slug.
+2. Add the following frontmatter at the top of the file:
+
+   ```markdown
+   ---
+   title: "Your Post Title"
+   date: "YYYY-MM-DD"
+   excerpt: "A brief description of your post"
+   tags: ["tag1", "tag2"]
+   isFeatured: true  # Optional, set to true to feature on homepage
+   ---
+
+   # Your Post Title
+
+   Your content goes here...
+   ```
+
+3. Write your post content using Markdown syntax below the frontmatter.
+
+### Customizing Pages
+
+- **Homepage**: Edit `src/app/page.tsx`
+- **About**: Edit `src/app/about/page.tsx`
+- **Contact**: Edit `src/app/contact/page.tsx`
+
+## Building and Deployment
+
+### Build for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will generate static HTML files in the `out` directory.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Deploying to Netlify/Vercel/GitHub Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Netlify**: Connect your repository and use the build command `npm run build` with publish directory `out`.
+- **Vercel**: Connect your repository and Vercel will automatically detect Next.js settings.
+- **GitHub Pages**: Push the `out` directory to the `gh-pages` branch.
 
-## Learn More
+## Site Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── src/
+│   ├── app/                # Pages and routes
+│   │   ├── blog/           # Blog listing and post pages
+│   │   ├── about/          # About page
+│   │   ├── contact/        # Contact page
+│   │   ├── layout.tsx      # Root layout
+│   │   └── page.tsx        # Homepage
+│   ├── components/         # Reusable components
+│   ├── content/            # Content files
+│   │   └── posts/          # Blog posts in Markdown
+│   └── lib/                # Utility functions
+│       └── posts.ts        # Blog post handling
+├── public/                 # Static assets
+└── tailwind.config.js      # Tailwind configuration
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Maintenance Tips
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Adding Images**: Place images in the `public/images` directory and reference them as `/images/filename.jpg`.
+- **Updating Styling**: Modify the theme in `tailwind.config.js` or adjust component styles in their respective files.
+- **SEO**: Update metadata in each page's component to improve search engine visibility.
 
-## Deploy on Vercel
+## Image Hosting Alternatives
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Local Images**: Store images in the `public/images` directory (simplest approach)
+- **Free Alternatives to Cloudinary**:
+  - Imgix has a free tier
+  - Imgur for simple image hosting
+  - GitHub repository itself for version-controlled images
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is MIT licensed.
+
+---
+
+Built with ❤️ using Next.js
