@@ -5,6 +5,8 @@ import { remark } from 'remark';
 import math from 'remark-math';
 import html from 'remark-html';
 import rehypeKatex from 'rehype-katex';
+import rehypeStringify from 'rehype-stringify';
+import remarkRehype from 'remark-rehype';
 
 const postsDirectory = path.join(process.cwd(), 'src/content/posts');
 
@@ -91,8 +93,9 @@ export async function getPostData(slug: string): Promise<Post> {
   // Use remark to convert markdown into HTML string with KaTeX support
   const processedContent = await remark()
     .use(math)
-    .use(html)
+    .use(remarkRehype)
     .use(rehypeKatex)
+    .use(rehypeStringify)
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
 
