@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getAllPosts, Post } from '@/lib/api';
 
+type ChangeFreq = 'daily' | 'monthly' | 'always' | 'hourly' | 'weekly' | 'yearly' | 'never';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://luispulido.com';
   
@@ -12,19 +14,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as ChangeFreq,
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as ChangeFreq,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as ChangeFreq,
       priority: 0.9,
     },
   ];
@@ -33,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const postRoutes = posts.map((post: Post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
+    changeFrequency: 'monthly' as ChangeFreq,
     priority: 0.7,
   }));
 
