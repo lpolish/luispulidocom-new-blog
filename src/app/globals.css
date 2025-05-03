@@ -22,24 +22,33 @@ html, body {
     @apply font-bold text-text mb-4;
   }
   h1 {
-    @apply text-3xl md:text-4xl;
+    @apply text-3xl md:text-4xl leading-[1.4] pb-2;
   }
   h2 {
-    @apply text-2xl md:text-3xl;
+    @apply text-2xl md:text-3xl leading-[1.35];
   }
   h3 {
-    @apply text-xl md:text-2xl;
+    @apply text-xl md:text-2xl leading-[1.4];
   }
   p {
-    @apply mb-4 text-text;
+    @apply mb-4 text-text leading-relaxed;
   }
   code {
-    @apply bg-primary px-1 py-0.5 rounded text-accent2 text-sm;
+    @apply bg-primary px-1 py-0.5 rounded text-accent2 text-sm leading-normal;
   }
   pre {
-    @apply bg-primary p-4 rounded-lg mb-4 overflow-x-auto;
+    @apply bg-primary p-4 rounded-lg mb-4 overflow-x-auto leading-normal;
   }
   blockquote {
-    @apply border-l-4 border-accent pl-4 italic text-textMuted my-4;
+    @apply border-l-4 border-accent pl-4 italic text-textMuted my-4 leading-relaxed;
   }
+}
+
+.hero-gradient {
+  background: linear-gradient(90deg, #F4F4F9 0%, #8CA0B6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.10);
 }

@@ -6,63 +6,63 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#0A0F14', // Richer dark background
-        primary: '#1A1F2C',    // Dark element background with blue undertone
-        secondary: '#2A2F3C',  // Secondary background with depth
-        accent: '#00E5FF',     // Brighter, more vibrant accent
-        accent2: '#FF6B6B',    // Warmer alternative accent
-        text: '#F0F4F8',       // Softer light text
-        textMuted: '#8A9BA8',  // More sophisticated muted text
-        highlight: '#2A3A4A',  // New highlight color for interactive elements
-        border: '#2A3A4A',     // Subtle border color
+        background: '#101114', // Almost pure black with subtle blue undertone
+        primary: '#23262F',    // Graphite
+        secondary: '#2C2F36',  // Slate
+        accent: '#8CA0B6',     // Muted blue accent
+        accent2: '#A3A380',    // Muted olive accent
+        text: '#F4F4F9',       // Soft white text
+        textMuted: '#A1A6B4',  // Misty gray
+        highlight: '#23262F',  // Graphite highlight
+        border: '#23262F',     // Graphite border
       },
       typography: {
         DEFAULT: {
           css: {
-            color: '#F0F4F8',
+            color: '#F4F4F9',
             maxWidth: '65ch',
             a: {
-              color: '#00E5FF',
+              color: '#8CA0B6',
               '&:hover': {
-                color: '#00c2cb',
+                color: '#A3A380',
                 textDecoration: 'underline',
               },
             },
             h1: {
-              color: '#F0F4F8',
+              color: '#F4F4F9',
               fontWeight: '700',
               letterSpacing: '-0.025em',
             },
             h2: {
-              color: '#F0F4F8',
+              color: '#F4F4F9',
               fontWeight: '600',
               letterSpacing: '-0.025em',
             },
             h3: {
-              color: '#F0F4F8',
+              color: '#F4F4F9',
               fontWeight: '600',
             },
             h4: {
-              color: '#F0F4F8',
+              color: '#F4F4F9',
               fontWeight: '600',
             },
             blockquote: {
-              color: '#8A9BA8',
-              borderLeftColor: '#2A3A4A',
+              color: '#A1A6B4',
+              borderLeftColor: '#23262F',
               fontStyle: 'italic',
             },
             strong: {
-              color: '#F0F4F8',
+              color: '#F4F4F9',
               fontWeight: '600',
             },
             code: {
-              color: '#FF6B6B',
-              backgroundColor: '#1A1F2C',
+              color: '#A3A380',
+              backgroundColor: '#23262F',
               padding: '0.2em 0.4em',
               borderRadius: '0.25em',
             },
             pre: {
-              backgroundColor: '#1A1F2C',
+              backgroundColor: '#23262F',
               borderRadius: '0.5em',
               padding: '1em',
               overflowX: 'auto',
