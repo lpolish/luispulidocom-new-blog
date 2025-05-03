@@ -26,7 +26,7 @@ const Footer = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="text-lg font-bold text-text mb-4">Luis Pulido</h3>
+            <h3 className="text-lg font-bold text-text mb-4">Luis Pulido Díaz</h3>
             <p className="text-textMuted text-sm mb-4">
               Software engineer focused on building robust systems.
             </p>
@@ -90,7 +90,7 @@ const Footer = () => {
           className="mt-12 pt-8 border-t border-border text-center"
         >
           <p className="text-textMuted text-sm">
-            © {currentYear} Luis Pulido. All rights reserved.
+            © {currentYear} Luis Pulido Díaz. All rights reserved.
           </p>
         </motion.div>
       </div>

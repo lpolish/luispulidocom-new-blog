@@ -13,14 +13,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Luis Pulido | Technical Blog",
-    template: "%s | Luis Pulido"
+    default: "Luis Pulido Díaz | Technical Blog",
+    template: "%s | Luis Pulido Díaz"
   },
   description: "A blog about networking, AI, science and technical topics",
   keywords: ["networking", "AI", "science", "technology", "blog", "technical"],
-  authors: [{ name: "Luis Pulido" }],
-  creator: "Luis Pulido",
-  publisher: "Luis Pulido",
+  authors: [{ name: "Luis Pulido Díaz" }],
+  creator: "Luis Pulido Díaz",
+  publisher: "Luis Pulido Díaz",
   formatDetection: {
     email: false,
     address: false,
@@ -31,24 +31,20 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-    ],
-    apple: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-    ],
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://luispulido.com',
-    title: 'Luis Pulido | Technical Blog',
+    title: 'Luis Pulido Díaz | Technical Blog',
     description: 'A blog about networking, AI, science and technical topics',
-    siteName: 'Luis Pulido',
+    siteName: 'Luis Pulido Díaz',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Luis Pulido | Technical Blog',
+    title: 'Luis Pulido Díaz | Technical Blog',
     description: 'A blog about networking, AI, science and technical topics',
     creator: '@luispulido',
   },
@@ -72,6 +68,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
       <body className={`${inter.className} bg-background text-text antialiased`}>
         <div className="flex flex-col min-h-screen">
           <Header />

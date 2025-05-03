@@ -16,9 +16,9 @@ const Header = () => {
           >
             <Link 
               href="/" 
-              className="text-2xl font-bold text-text hover:text-accent transition-all duration-300 no-underline"
+              className="text-2xl font-semibold text-text hover:text-accent transition-all duration-300 no-underline tracking-tighter"
             >
-              Luis Pulido
+              Luis Pulido Díaz
             </Link>
           </motion.div>
           <nav className="w-full md:w-auto">
