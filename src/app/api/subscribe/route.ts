@@ -30,10 +30,9 @@ export async function OPTIONS() {
 export async function POST(request: Request) {
   try {
     console.log('Request headers:', Object.fromEntries(request.headers.entries()));
-    const body = await request.text();
-    console.log('Request body:', body);
-    
-    const { email, token } = JSON.parse(body);
+    // const body = await request.text();
+    // const { email, token } = JSON.parse(body);
+    const { email, token } = await request.json();
 
     console.log('Parsed email:', email);
     console.log('Parsed token:', token);
