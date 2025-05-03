@@ -12,8 +12,57 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Luis Pulido | Technical Blog",
+  title: {
+    default: "Luis Pulido | Technical Blog",
+    template: "%s | Luis Pulido"
+  },
   description: "A blog about networking, AI, science and technical topics",
+  keywords: ["networking", "AI", "science", "technology", "blog", "technical"],
+  authors: [{ name: "Luis Pulido" }],
+  creator: "Luis Pulido",
+  publisher: "Luis Pulido",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://luispulido.com'),
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://luispulido.com',
+    title: 'Luis Pulido | Technical Blog',
+    description: 'A blog about networking, AI, science and technical topics',
+    siteName: 'Luis Pulido',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Luis Pulido | Technical Blog',
+    description: 'A blog about networking, AI, science and technical topics',
+    creator: '@luispulido',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
