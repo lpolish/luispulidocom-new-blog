@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { getAllPostSlugs, getPostData, type Post } from '@/lib/posts';
+import { getAllPostSlugs, getPostData, getSortedPostsData, type Post } from '@/lib/posts';
+import { RelatedPosts } from '@/components/RelatedPosts';
 
 export async function generateStaticParams() {
   const paths = getAllPostSlugs();
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Post({ params }: Props) {
   const post = await getPostData(params.slug);
+  const allPosts = getSortedPostsData();
   
   return (
     <div className="max-w-3xl mx-auto">
@@ -69,6 +71,8 @@ export default async function Post({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
+      
+      <RelatedPosts currentPost={post} allPosts={allPosts} />
       
       <div className="mt-16 border-t border-border pt-8">
         <Link 
