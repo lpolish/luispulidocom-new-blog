@@ -16,6 +16,17 @@ async function verifyRecaptcha(token: string) {
   return data.success && data.score >= 0.5;
 }
 
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
+}
+
 export async function POST(request: Request) {
   try {
     console.log('Request headers:', Object.fromEntries(request.headers.entries()));
@@ -66,11 +77,20 @@ export async function POST(request: Request) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
   }
 } 
