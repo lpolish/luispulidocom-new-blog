@@ -7,8 +7,8 @@ export const metadata = {
   description: 'Articles on networking, AI, science, and technical topics',
 };
 
-export default function Blog() {
-  const allPosts = getSortedPostsData();
+export default async function Blog() {
+  const allPosts = await getSortedPostsData();
   
   return (
     <div className="max-w-4xl mx-auto">

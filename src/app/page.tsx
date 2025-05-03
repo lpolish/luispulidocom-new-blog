@@ -4,8 +4,8 @@ import SubscribeForm from '@/components/SubscribeForm';
 import ReCAPTCHA from '@/components/ReCAPTCHA';
 import Link from 'next/link';
 
-export default function Home() {
-  const featuredPosts = getFeaturedPosts();
+export default async function Home() {
+  const featuredPosts = await getFeaturedPosts();
   
   return (
     <div className="space-y-32 mb-32">
