@@ -1,20 +1,78 @@
 import { getFeaturedPosts } from '@/lib/posts';
 import { FeaturedPosts } from '@/components/FeaturedPosts';
+import Link from 'next/link';
 
 export default function Home() {
   const featuredPosts = getFeaturedPosts();
   
   return (
-    <div className="space-y-24 mb-24">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-text to-textMuted bg-clip-text text-transparent">
-          Technical Insights & Knowledge Sharing
-        </h1>
-        <p className="text-xl text-textMuted mb-8">
-          Exploring the intersection of technology, networking, and artificial intelligence through code and documentation.
-        </p>
-      </div>
-      <FeaturedPosts posts={featuredPosts} />
+    <div className="space-y-32 mb-32">
+      {/* Hero Section */}
+      <section className="relative">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="space-y-8">
+            <h1 className="text-5xl md:text-6xl font-bold hero-gradient">
+              Unpacking Systems, Software, and Ideas
+            </h1>
+            <p className="text-2xl text-textMuted leading-relaxed">
+              Discover a take on software, architecture, and the craft of technology.
+            </p>
+            <div className="flex gap-4">
+              <Link 
+                href="/blog" 
+                className="px-6 py-3 bg-accent text-primary rounded-lg font-medium hover:bg-accent/90 transition-colors"
+              >
+                View Posts
+              </Link>
+              <Link 
+                href="/about" 
+                className="px-6 py-3 border border-border rounded-lg font-medium hover:border-accent transition-colors"
+              >
+                About Me
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Posts Section */}
+      <section>
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl font-bold">Latest Insights</h2>
+            <Link 
+              href="/blog" 
+              className="text-accent hover:text-accent/80 transition-colors"
+            >
+              View all articles →
+            </Link>
+          </div>
+          <FeaturedPosts posts={featuredPosts} />
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="bg-primary/50 backdrop-blur-sm rounded-2xl border border-border p-8">
+        <div className="max-w-2xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl font-bold">Stay Updated</h2>
+          <p className="text-textMuted text-lg">
+            Subscribe to receive the latest articles and insights directly in your inbox.
+          </p>
+          <form className="flex gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-lg border border-border bg-primary focus:border-accent focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-accent text-primary rounded-lg font-medium hover:bg-accent/90 transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
