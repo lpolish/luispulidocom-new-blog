@@ -16,24 +16,41 @@ async function verifyRecaptcha(token: string) {
   return data.success && data.score >= 0.5;
 }
 
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const { name, email, message, token } = await request.json();
 
     if (!name || !email || !message || !token) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
     // Verify reCAPTCHA token
     const isValid = await verifyRecaptcha(token);
     if (!isValid) {
-      return NextResponse.json(
-        { error: 'Invalid reCAPTCHA token' },
-        { status: 400 }
-      );
+      return new Response(JSON.stringify({ error: 'Invalid reCAPTCHA token' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
     const { data, error } = await resend.emails.send({
@@ -50,14 +67,29 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ error }, { status: 500 });
+      return new Response(JSON.stringify({ error }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
-    return NextResponse.json({ success: true });
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    });
   }
 } 
