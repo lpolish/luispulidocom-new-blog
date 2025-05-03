@@ -38,15 +38,23 @@ export default function SubscribeForm() {
         action: 'subscribe',
       });
 
+      console.log('Form data:', data);
+      console.log('reCAPTCHA token:', token);
+
+      const requestBody = { ...data, token };
+      console.log('Request body:', requestBody);
+
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...data, token }),
+        body: JSON.stringify(requestBody),
       });
 
+      console.log('Response status:', response.status);
       const result = await response.json();
+      console.log('Response data:', result);
 
       if (!response.ok) {
         throw new Error(result.error || 'Something went wrong');

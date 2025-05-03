@@ -18,7 +18,14 @@ async function verifyRecaptcha(token: string) {
 
 export async function POST(request: Request) {
   try {
-    const { email, token } = await request.json();
+    console.log('Request headers:', Object.fromEntries(request.headers.entries()));
+    const body = await request.text();
+    console.log('Request body:', body);
+    
+    const { email, token } = JSON.parse(body);
+
+    console.log('Parsed email:', email);
+    console.log('Parsed token:', token);
 
     if (!email || !token) {
       return NextResponse.json(
