@@ -2,7 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
+import math from 'remark-math';
 import html from 'remark-html';
+import rehypeKatex from 'rehype-katex';
 
 const postsDirectory = path.join(process.cwd(), 'src/content/posts');
 
@@ -86,9 +88,11 @@ export async function getPostData(slug: string): Promise<Post> {
   // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents);
 
-  // Use remark to convert markdown into HTML string
+  // Use remark to convert markdown into HTML string with KaTeX support
   const processedContent = await remark()
+    .use(math)
     .use(html)
+    .use(rehypeKatex)
     .process(matterResult.content);
   const contentHtml = processedContent.toString();
 
