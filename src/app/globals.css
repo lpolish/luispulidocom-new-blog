@@ -44,6 +44,72 @@ html, body {
   }
 }
 
+/* Mermaid and Diagram Styles */
+.mermaid {
+  @apply bg-transparent p-4 rounded-lg overflow-x-auto;
+}
+
+.mermaid svg {
+  @apply max-w-full;
+}
+
+/* Code Block Styles */
+pre {
+  @apply relative;
+}
+
+pre code {
+  @apply block p-0 bg-transparent;
+}
+
+/* Syntax Highlighting */
+pre code .token {
+  @apply text-text;
+}
+
+pre code .token.keyword,
+pre code .token.function,
+pre code .token.class-name,
+pre code .token.selector,
+pre code .token.tag {
+  @apply text-syntax-keyword;
+}
+
+pre code .token.string,
+pre code .token.number,
+pre code .token.property,
+pre code .token.regex,
+pre code .token.attribute {
+  @apply text-syntax-string;
+}
+
+pre code .token.comment {
+  @apply text-syntax-comment;
+}
+
+pre code .token.operator {
+  @apply text-syntax-operator;
+}
+
+pre code .token.punctuation {
+  @apply text-syntax-punctuation;
+}
+
+pre code .token.variable,
+pre code .token.constant {
+  @apply text-syntax-variable;
+}
+
+/* Copy Button for Code Blocks */
+pre::before {
+  content: 'Copy';
+  @apply absolute top-2 right-2 text-xs text-textMuted cursor-pointer hover:text-accent transition-colors duration-200;
+}
+
+pre:hover::before {
+  @apply text-accent;
+}
+
 .hero-gradient {
   background: linear-gradient(90deg, #F4F4F9 0%, #8CA0B6 100%);
   -webkit-background-clip: text;

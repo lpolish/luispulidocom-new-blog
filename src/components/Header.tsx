@@ -16,7 +16,7 @@ const Header = () => {
           >
             <Link 
               href="/" 
-              className="text-2xl font-semibold text-text hover:text-accent transition-all duration-300 no-underline tracking-tighter"
+              className="text-lg font-medium text-text hover:text-accent transition-all duration-300 no-underline tracking-tighter border border-border px-3 py-1"
             >
               Luis Pulido Díaz
             </Link>

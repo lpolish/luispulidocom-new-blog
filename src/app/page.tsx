@@ -1,5 +1,7 @@
 import { getFeaturedPosts } from '@/lib/posts';
 import { FeaturedPosts } from '@/components/FeaturedPosts';
+import SubscribeForm from '@/components/SubscribeForm';
+import ReCAPTCHA from '@/components/ReCAPTCHA';
 import Link from 'next/link';
 
 export default function Home() {
@@ -58,21 +60,13 @@ export default function Home() {
           <p className="text-textMuted text-lg">
             Subscribe to receive the latest articles and insights directly in your inbox.
           </p>
-          <form className="flex gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border border-border bg-primary focus:border-accent focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-accent text-primary rounded-lg font-medium hover:bg-accent/90 transition-colors"
-            >
-              Subscribe
-            </button>
-          </form>
+          <div className="max-w-md mx-auto">
+            <SubscribeForm />
+          </div>
         </div>
       </section>
+
+      <ReCAPTCHA />
     </div>
   );
 }

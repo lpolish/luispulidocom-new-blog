@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'About | Luis Pulido',
-  description: 'Learn about Luis Pulido, a curious scientist and tech enthusiast',
+  description: 'Learn about Luis Pulido, a software engineer with over 12 years of experience building scalable solutions',
 };
 
 export default function About() {
@@ -12,26 +12,15 @@ export default function About() {
       
       <div className="bg-primary rounded-lg p-8 shadow-lg">
         <p className="mb-4">
-          Hello, I'm Luis. I'm a curious scientist and technology enthusiast with a passion for understanding how things work, from networking protocols to artificial intelligence systems.
+          I'm Luis, a software engineer who's been building things for over 12 years. I've worked across different industries, always with one goal: making systems that don't just work, but work well.
         </p>
         
         <p className="mb-4">
-          This blog is my personal space to explore and share technical insights on topics I find fascinating. I approach technology with curiosity and depth, without the constraints of self-promotion or commercial interests.
+          I build modern web applications that scale efficiently. I care about clean code, but I care more about solving real problems and delivering results that matter.
         </p>
-        
-        <p className="mb-4">
-          My current interests include:
-        </p>
-        
-        <ul className="list-disc list-inside mb-4 pl-4 space-y-2">
-          <li>Networking fundamentals and advanced concepts</li>
-          <li>Artificial intelligence and machine learning</li>
-          <li>Scientific discoveries and technological innovations</li>
-          <li>The intersection of technology and human understanding</li>
-        </ul>
         
         <p className="mb-8">
-          I believe in approaching complex subjects with clarity and authenticity, making them approachable without oversimplification.
+          This blog is where I share what I learn along the way. No fluff, just the stuff that matters.
         </p>
         
         <div className="mt-8">
@@ -39,7 +28,7 @@ export default function About() {
             href="/contact" 
             className="px-6 py-3 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors inline-block"
           >
-            Get in touch
+            Let's Connect
           </Link>
         </div>
       </div>

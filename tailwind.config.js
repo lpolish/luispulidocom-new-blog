@@ -15,6 +15,24 @@ module.exports = {
         textMuted: '#A1A6B4',  // Misty gray
         highlight: '#23262F',  // Graphite highlight
         border: '#23262F',     // Graphite border
+        // Code syntax colors
+        syntax: {
+          keyword: '#8CA0B6',    // Blue for keywords
+          string: '#A3A380',     // Olive for strings
+          comment: '#6B7280',    // Gray for comments
+          function: '#8CA0B6',   // Blue for functions
+          number: '#A3A380',     // Olive for numbers
+          operator: '#F4F4F9',   // White for operators
+          punctuation: '#A1A6B4',// Muted for punctuation
+          variable: '#F4F4F9',   // White for variables
+          class: '#8CA0B6',      // Blue for classes
+          property: '#A3A380',   // Olive for properties
+          constant: '#F4F4F9',   // White for constants
+          regex: '#A3A380',      // Olive for regex
+          selector: '#8CA0B6',   // Blue for selectors
+          tag: '#8CA0B6',        // Blue for HTML tags
+          attribute: '#A3A380',  // Olive for attributes
+        }
       },
       typography: {
         DEFAULT: {
@@ -60,12 +78,47 @@ module.exports = {
               backgroundColor: '#23262F',
               padding: '0.2em 0.4em',
               borderRadius: '0.25em',
+              fontSize: '0.875em',
             },
             pre: {
               backgroundColor: '#23262F',
               borderRadius: '0.5em',
               padding: '1em',
               overflowX: 'auto',
+              fontSize: '0.875em',
+              lineHeight: '1.7142857',
+              marginTop: '1.7142857em',
+              marginBottom: '1.7142857em',
+              border: '1px solid #2C2F36',
+              '& code': {
+                backgroundColor: 'transparent',
+                padding: '0',
+                borderRadius: '0',
+                color: '#F4F4F9',
+                fontSize: '1em',
+              },
+            },
+            'pre[class*="mermaid"]': {
+              backgroundColor: 'transparent',
+              padding: '1em',
+              overflowX: 'auto',
+              fontSize: '0.875em',
+              lineHeight: '1.7142857',
+              marginTop: '1.7142857em',
+              marginBottom: '1.7142857em',
+              border: '1px solid #2C2F36',
+              borderRadius: '0.5em',
+            },
+            'pre[class*="diagram"]': {
+              backgroundColor: 'transparent',
+              padding: '1em',
+              overflowX: 'auto',
+              fontSize: '0.875em',
+              lineHeight: '1.7142857',
+              marginTop: '1.7142857em',
+              marginBottom: '1.7142857em',
+              border: '1px solid #2C2F36',
+              borderRadius: '0.5em',
             },
           },
         },
