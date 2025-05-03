@@ -1,8 +1,9 @@
 ---
-title: "Understanding NAT and Port Forwarding: A Deep Dive into Network Address Translation"
-date: "2025-05-02"
+title: "Understanding NAT and Port Forwarding: A Comprehensive Guide"
+date: "2024-04-20"
+description: "A comprehensive guide to Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
 excerpt: "A comprehensive guide to Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
-tags: ["networking", "security", "devops"]
+tags: ["networking", "nat", "port-forwarding", "security", "infrastructure"]
 isFeatured: true
 ---
 

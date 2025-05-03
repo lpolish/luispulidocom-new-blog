@@ -1,7 +1,8 @@
 ---
 title: "Understanding and Implementing Zero Trust Architecture in Modern Applications"
-date: "2024-05-03"
+date: "2024-04-30"
 description: "A comprehensive guide to Zero Trust Architecture, covering core principles, implementation patterns, and practical examples for modern cloud-native applications. Learn how to implement Zero Trust security in your infrastructure and applications."
+excerpt: "Zero Trust Architecture eliminates implicit trust in modern applications, requiring continuous validation for every access request regardless of origin."
 tags: ["security", "zero-trust", "cloud-native", "devops", "infrastructure", "authentication", "authorization"]
 isFeatured: true
 ---

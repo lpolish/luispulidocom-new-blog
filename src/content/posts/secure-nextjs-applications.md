@@ -1,7 +1,8 @@
 ---
 title: "Building Secure Web Applications with Next.js: Best Practices and Common Pitfalls"
-date: "2024-05-03"
+date: "2024-04-25"
 description: "Learn how to build secure Next.js applications with comprehensive security best practices, from authentication to API protection. This guide covers essential security measures and common pitfalls to avoid in modern web development."
+excerpt: "Next.js applications require comprehensive security measures, from authentication to API protection, with practical TypeScript examples and common pitfalls to avoid."
 tags: ["nextjs", "security", "web-development", "authentication", "api-security"]
 isFeatured: true
 ---

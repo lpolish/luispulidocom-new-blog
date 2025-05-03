@@ -1,8 +1,9 @@
 ---
-title: "AI Gateways: How Large Language Models Transform and Route Knowledge Like Network Protocols"
-date: "2025-05-02"
+title: "AI Gateways and LLMs: Transforming Knowledge Routing"
+date: "2024-04-22"
+description: "Exploring how Large Language Models process and route information through the lens of networking protocols, drawing parallels between NAT and attention mechanisms."
 excerpt: "Exploring how Large Language Models process and route information through the lens of networking protocols, drawing parallels between NAT and attention mechanisms."
-tags: ["ai", "machine-learning", "networking", "programming"]
+tags: ["ai", "llm", "networking", "architecture", "knowledge-graphs"]
 isFeatured: true
 ---
 

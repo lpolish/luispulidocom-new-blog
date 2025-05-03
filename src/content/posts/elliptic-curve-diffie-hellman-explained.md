@@ -1,7 +1,8 @@
 ---
 title: "Understanding Elliptic Curve Diffie-Hellman: A Journey Through Modern Cryptography"
-date: "2024-05-03"
+date: "2024-04-28"
 description: "Exploring Elliptic Curve Diffie-Hellman (ECDH): mathematical foundations, implementation, and its role in modern cryptography. ECDH enables secure key exchange with smaller key sizes compared to traditional Diffie-Hellman."
+excerpt: "Elliptic Curve Diffie-Hellman provides secure key exchange with smaller key sizes than traditional methods, using elegant mathematical principles for robust cryptography."
 tags: ["cryptography", "security", "mathematics", "elliptic-curves", "post-quantum-cryptography"]
 isFeatured: true
 ---
