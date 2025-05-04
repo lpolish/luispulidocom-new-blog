@@ -26,8 +26,24 @@ export default function ReCAPTCHA() {
       };
       document.body.appendChild(script);
 
+      // Add custom CSS for the reCAPTCHA badge
+      const style = document.createElement('style');
+      style.textContent = `
+        .grecaptcha-badge {
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .grecaptcha-badge:hover {
+          visibility: visible;
+          opacity: 1;
+        }
+      `;
+      document.head.appendChild(style);
+
       return () => {
         document.body.removeChild(script);
+        document.head.removeChild(style);
       };
     };
 
