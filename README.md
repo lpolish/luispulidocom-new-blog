@@ -1,6 +1,16 @@
 # Luis Pulido Blog
 
-A minimalistic, dark-mode blog focused on technical topics like networking, AI, and science.
+A technical blog exploring software architecture, security, AI, and modern web development. Dive into practical guides, deep technical insights, and real-world solutions for engineers and curious minds.
+
+## Screenshots
+
+Desktop:
+
+![Desktop Screenshot](public/screenshot-desktop.png)
+
+Mobile:
+
+![Mobile Screenshot](public/screenshot-mobile.png)
 
 ## Overview
 
