@@ -135,7 +135,3 @@ This will generate static HTML files in the `out` directory.
 ## License
 
 This project is MIT licensed.
-
----
-
-Built with ❤️ using Next.js
