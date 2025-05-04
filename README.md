@@ -38,7 +38,7 @@ This is a personal blog built with Next.js and TypeScript, designed to be:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/lpolish/luispulido.com.git
+   git clone https://github.com/lpolish/luispulidocom-new-blog.git
    cd luispulido.com
    ```
 
