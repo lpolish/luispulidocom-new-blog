@@ -10,10 +10,10 @@ export default async function Home() {
   return (
     <div className="space-y-32 mb-32">
       {/* Hero Section */}
-      <section className="relative">
+      <section className="relative pt-24 md:pt-32">
         <div className="max-w-4xl mx-auto px-4">
           <div className="space-y-8">
-            <h1 className="text-5xl md:text-6xl font-bold hero-gradient">
+            <h1 className="text-5xl md:text-6xl font-bold text-text">
               Unpacking Systems, Software, and Ideas
             </h1>
             <p className="text-2xl text-textMuted leading-relaxed">
