@@ -56,9 +56,6 @@ export default async function Post({ params }: Props) {
               Back to all posts
             </Link>
             
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-text to-textMuted bg-clip-text text-transparent">
-              {post.title}
-            </h1>
             <p className="text-textMuted font-mono">{post.date}</p>
             
             {post.tags && post.tags.length > 0 && (
