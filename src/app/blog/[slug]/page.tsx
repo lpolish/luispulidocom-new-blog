@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { getAllPostSlugs, getPostData, getSortedPostsData, type Post } from '@/lib/posts';
 import { RelatedPosts } from '@/components/RelatedPosts';
 import { notFound } from 'next/navigation';
+import { PostContent } from '@/components/PostContent';
 
 export async function generateStaticParams() {
   const paths = await getAllPostSlugs();
@@ -74,10 +75,7 @@ export default async function Post({ params }: Props) {
             )}
           </header>
           
-          <div 
-            className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:text-accent2 prose-code:bg-primary/50 prose-code:px-2 prose-code:py-0.5 prose-code:rounded prose-pre:bg-primary/50 prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:p-0 prose-pre:overflow-x-auto prose-pre:line-numbers prose-blockquote:border-l-accent prose-blockquote:pl-4 prose-blockquote:italic"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <PostContent content={post.content} />
         </article>
         
         <RelatedPosts currentPost={post} allPosts={allPosts} />

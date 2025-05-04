@@ -26,12 +26,15 @@
     "react-syntax-highlighter": "^15.6.1",
     "rehype-highlight": "^7.0.2",
     "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.1",
     "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "remark-math": "^6.0.0",
     "remark-rehype": "^11.1.2",
     "resend": "^4.5.0",
+    "shiki": "^3.3.0",
+    "unist-util-visit": "^5.0.0",
     "zod": "^3.24.3"
   },
   "devDependencies": {

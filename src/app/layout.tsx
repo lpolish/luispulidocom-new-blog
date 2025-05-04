@@ -73,6 +73,22 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" type="image/svg+xml" />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            document.addEventListener('click', function(e) {
+              if (e.target.classList.contains('copy-button')) {
+                const code = e.target.getAttribute('data-code');
+                navigator.clipboard.writeText(code).then(() => {
+                  const originalText = e.target.textContent;
+                  e.target.textContent = 'Copied!';
+                  setTimeout(() => {
+                    e.target.textContent = originalText;
+                  }, 2000);
+                });
+              }
+            });
+          `
+        }} />
       </head>
       <body className={`${inter.className} bg-background text-text antialiased`}>
         <div className="flex flex-col min-h-screen">
