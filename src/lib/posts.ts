@@ -8,6 +8,8 @@ import rehypeKatex from 'rehype-katex';
 import rehypeStringify from 'rehype-stringify';
 import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
+import { CodeBlock } from '@/components/CodeBlock';
+import { rehypeStoreCodeContent } from './rehypeStoreCodeContent';
 
 const postsDirectory = path.join(process.cwd(), 'src/content/posts');
 
@@ -95,14 +97,16 @@ export async function getPostData(slug: string): Promise<Post> {
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
 
-    // Use remark to convert markdown into HTML string with KaTeX and syntax highlighting
-    const processedContent = await remark()
-      .use(math)
-      .use(remarkRehype)
-      .use(rehypeKatex)
-      .use(rehypeHighlight)
-      .use(rehypeStringify)
-      .process(matterResult.content);
+    // Use remark to convert markdown into HTML string
+    const remarkProcessor = remark();
+    remarkProcessor.use(math);
+    remarkProcessor.use(remarkRehype);
+    remarkProcessor.use(rehypeStoreCodeContent);
+    remarkProcessor.use(rehypeKatex);
+    remarkProcessor.use(rehypeHighlight);
+    remarkProcessor.use(rehypeStringify);
+
+    const processedContent = await remarkProcessor.process(matterResult.content);
     const contentHtml = processedContent.toString();
 
     // Combine the data with the slug

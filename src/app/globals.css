@@ -3,118 +3,95 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 224, 224, 224;
-  --background-start-rgb: 18, 21, 22;
-  --background-end-rgb: 18, 21, 22;
+  --foreground: #ffffff;
+  --background: #0a0a0a;
 }
 
-html, body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
-  min-height: 100vh;
+body {
+  color: var(--foreground);
+  background: var(--background);
 }
 
-@layer base {
-  a {
-    @apply text-accent hover:text-accent/80 transition-colors duration-200;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-text mb-4;
-  }
-  h1 {
-    @apply text-3xl md:text-4xl leading-[1.4] pb-2;
-  }
-  h2 {
-    @apply text-2xl md:text-3xl leading-[1.35];
-  }
-  h3 {
-    @apply text-xl md:text-2xl leading-[1.4];
-  }
-  p {
-    @apply mb-4 text-text leading-relaxed;
-  }
-  code {
-    @apply bg-primary px-1 py-0.5 rounded text-accent2 text-sm leading-normal;
-  }
-  pre {
-    @apply bg-primary p-4 rounded-lg mb-4 overflow-x-auto leading-normal;
-  }
-  blockquote {
-    @apply border-l-4 border-accent pl-4 italic text-textMuted my-4 leading-relaxed;
-  }
+/* Override prose styles for code elements inside pre */
+.prose pre code {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  padding: 0 !important;
 }
 
-/* Mermaid and Diagram Styles */
-.mermaid {
-  @apply bg-transparent p-4 rounded-lg overflow-x-auto;
+/* Copy button - always visible */
+pre button {
+  opacity: 1 !important;
+  z-index: 30 !important;
+  transition: all 0.2s ease-in-out !important;
 }
 
-.mermaid svg {
-  @apply max-w-full;
+pre button:hover {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  color: white !important;
 }
 
-/* Code Block Styles */
-pre {
-  @apply relative;
-}
-
+/* Ensure code elements inside pre have proper styling */
 pre code {
-  @apply block p-0 bg-transparent;
+  background-color: transparent !important;
+  color: white !important;
+  font-family: 'Fira Mono', Menlo, Monaco, Consolas, monospace !important;
 }
 
-/* Syntax Highlighting */
-pre code .token {
-  @apply text-text;
+/* Code block styles */
+.code-block-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
 }
 
-pre code .token.keyword,
-pre code .token.function,
-pre code .token.class-name,
-pre code .token.selector,
-pre code .token.tag {
-  @apply text-syntax-keyword;
+.code-block-wrapper pre {
+  position: relative;
+  padding: 1.5rem;
+  background: #000000;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-pre code .token.string,
-pre code .token.number,
-pre code .token.property,
-pre code .token.regex,
-pre code .token.attribute {
-  @apply text-syntax-string;
+/* Ensure position of pre elements is set correctly for copy button placement */
+pre {
+  position: relative !important;
 }
 
-pre code .token.comment {
-  @apply text-syntax-comment;
+/* Syntax highlighting */
+.hljs {
+  background: transparent;
+  padding: 0;
 }
 
-pre code .token.operator {
-  @apply text-syntax-operator;
+.hljs-keyword {
+  color: #8CA0B6;
 }
 
-pre code .token.punctuation {
-  @apply text-syntax-punctuation;
+.hljs-string {
+  color: #A3A380;
 }
 
-pre code .token.variable,
-pre code .token.constant {
-  @apply text-syntax-variable;
+.hljs-comment {
+  color: #6a6a6a;
 }
 
-/* Copy Button for Code Blocks */
-pre::before {
-  content: 'Copy';
-  @apply absolute top-2 right-2 text-xs text-textMuted cursor-pointer hover:text-accent transition-colors duration-200;
+.hljs-function {
+  color: #50fa7b;
 }
 
-pre:hover::before {
-  @apply text-accent;
+.hljs-number {
+  color: #f1fa8c;
 }
 
+.hljs-operator, .hljs-punctuation {
+  color: #F4F4F9;
+}
+
+/* Hero gradient */
 .hero-gradient {
-  background: linear-gradient(90deg, #F4F4F9 0%, #8CA0B6 100%);
+  background: linear-gradient(135deg, #ff79c6 0%, #50fa7b 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 2px 16px rgba(0,0,0,0.10);
 }
