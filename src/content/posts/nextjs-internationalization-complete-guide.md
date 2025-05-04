@@ -28,6 +28,8 @@ Next.js provides built-in support for internationalization through its routing s
 
 Next.js uses a locale-based routing system where each language version of your application has its own URL path. The locale is typically represented by a two-letter language code (e.g., 'en', 'es', 'fr') or a combination of language and region (e.g., 'en-US', 'es-ES').
 
+Before diving into the implementation, it's important to define our types and interfaces to ensure type safety throughout our application. These types will help us maintain consistency in how we handle different languages and their translations:
+
 ```typescript
 // types/i18n.d.ts
 export type Locale = 'en' | 'es' | 'fr';
@@ -39,6 +41,11 @@ export interface I18nConfig {
   fallbackLocale: Locale;
 }
 ```
+
+This type system provides several benefits:
+- `Locale` type ensures we only use supported language codes
+- `Dictionary` type defines the structure of our translation files
+- `I18nConfig` interface standardizes our internationalization settings
 
 ### Language Routing and URL Structure
 
