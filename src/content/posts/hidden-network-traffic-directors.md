@@ -1,8 +1,8 @@
 ---
 title: "The Hidden Network Traffic Directors"
 date: "2024-04-20"
-description: "A comprehensive guide to Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
-excerpt: "A comprehensive guide to Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
+description: "Technical overview of Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
+excerpt: "Technical overview of Network Address Translation (NAT) and port forwarding, explaining how these technologies enable internet connectivity and network security."
 tags: ["networking", "nat", "port-forwarding", "security", "infrastructure"]
 isFeatured: true
 ---
