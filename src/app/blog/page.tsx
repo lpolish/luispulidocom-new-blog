@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getSortedPostsData, type Post } from '@/lib/posts';
 import { BlogList } from '@/components/BlogList';
+import SubscribeForm from '@/components/SubscribeForm';
+import ReCAPTCHA from '@/components/ReCAPTCHA';
 
 export const metadata = {
   title: 'Blog | Luis Pulido',
@@ -22,6 +24,18 @@ export default async function Blog() {
       </div>
       
       <BlogList posts={allPosts} />
+
+      <div className="mt-16 mb-8">
+        <div className="bg-primary/50 backdrop-blur-sm rounded-xl p-8 border border-border">
+          <h2 className="text-2xl font-bold mb-4 text-text">Stay Updated</h2>
+          <p className="text-textMuted mb-6">
+            Subscribe to my newsletter to receive updates when new content is published.
+          </p>
+          <SubscribeForm />
+        </div>
+      </div>
+
+      <ReCAPTCHA />
     </div>
   );
 } 
