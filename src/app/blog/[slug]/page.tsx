@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getAllPostSlugs, getPostData, getSortedPostsData, type Post } from '@/lib/posts';
 import { RelatedPosts } from '@/components/RelatedPosts';
 import { notFound } from 'next/navigation';
