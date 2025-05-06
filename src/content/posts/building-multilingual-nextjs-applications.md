@@ -4,6 +4,7 @@ description: "Learn how to implement internationalization in Next.js application
 date: "2024-05-04"
 tags: ["nextjs", "typescript", "i18n", "internationalization", "web development"]
 author: "Luis Pulido"
+excerpt: "A comprehensive guide to implementing internationalization in Next.js applications, covering everything from basic setup to advanced features like dynamic routing, content translation strategies, and performance optimization techniques."
 ---
 
 # Next.js Internationalization (i18n): A Complete Guide
