@@ -1,12 +1,12 @@
 import { getSortedPostsData } from '@/lib/posts';
-import { BlogList } from '@/components/BlogList';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import Loading from './loading';
+import { PostsSection } from '@/components/PostsSection';
 
 export default async function Home() {
   const allPosts = await getSortedPostsData();
-  const recentPosts = allPosts.slice(0, 5); // Show only the 5 most recent posts
+  const initialPosts = allPosts.slice(0, 4); // Show only the 4 most recent posts initially
   
   return (
     <div className="space-y-32 mb-32">
@@ -46,7 +46,7 @@ export default async function Home() {
           <div className="mb-12">
             <h2 className="text-3xl font-bold">Recent Posts</h2>
           </div>
-          <BlogList posts={recentPosts} />
+          <PostsSection initialPosts={initialPosts} allPosts={allPosts} />
         </div>
       </section>
     </div>
