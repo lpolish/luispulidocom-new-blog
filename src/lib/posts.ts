@@ -10,6 +10,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeHighlight from 'rehype-highlight';
 import { CodeBlock } from '@/components/CodeBlock';
 import { rehypeStoreCodeContent } from './rehypeStoreCodeContent';
+import { rehypeReferences } from './rehypeReferences';
 
 const postsDirectory = path.join(process.cwd(), 'src/content/posts');
 
@@ -102,6 +103,7 @@ export async function getPostData(slug: string): Promise<Post> {
     remarkProcessor.use(math);
     remarkProcessor.use(remarkRehype);
     remarkProcessor.use(rehypeStoreCodeContent);
+    remarkProcessor.use(rehypeReferences);
     remarkProcessor.use(rehypeKatex);
     remarkProcessor.use(rehypeHighlight);
     remarkProcessor.use(rehypeStringify);
