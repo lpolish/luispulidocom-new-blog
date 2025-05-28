@@ -11,6 +11,9 @@ export function RelatedPosts({ currentPost, allPosts }: RelatedPostsProps) {
   const relatedPosts = allPosts
     .filter(post => post.slug !== currentPost.slug)
     .filter(post => {
+      // Check if tags exists on both posts before filtering
+      if (!post.tags || !currentPost.tags) return false;
+      
       const commonTags = post.tags.filter(tag => currentPost.tags.includes(tag));
       return commonTags.length > 0;
     })
@@ -30,16 +33,18 @@ export function RelatedPosts({ currentPost, allPosts }: RelatedPostsProps) {
           >
             <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
             <p className="text-textMuted text-sm">{post.date}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 py-1 text-xs rounded-full bg-backgroundMuted text-textMuted"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-1 text-xs rounded-full bg-backgroundMuted text-textMuted"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </Link>
         ))}
       </div>

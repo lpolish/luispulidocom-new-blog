@@ -15,7 +15,7 @@ export function InfiniteScrollPosts({ initialPosts, allPosts }: InfiniteScrollPo
   const [page, setPage] = useState(0); // Start from 0 since we already have initial posts
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const postsPerPage = 4;
+  const postsPerPage = 8; // Show more posts at once for a better masonry layout
 
   const loadMorePosts = useCallback(() => {
     if (loading || !hasMore) return;
@@ -44,8 +44,8 @@ export function InfiniteScrollPosts({ initialPosts, allPosts }: InfiniteScrollPo
       const scrollTop = window.scrollY;
       const clientHeight = document.documentElement.clientHeight;
 
-      // Load more posts when user is near the bottom (within 200px)
-      if (scrollHeight - scrollTop - clientHeight < 200) {
+      // Load more posts when user is near the bottom (within 300px)
+      if (scrollHeight - scrollTop - clientHeight < 300) {
         loadMorePosts();
       }
     };
@@ -61,16 +61,16 @@ export function InfiniteScrollPosts({ initialPosts, allPosts }: InfiniteScrollPo
   }, [posts.length, allPosts.length]);
 
   return (
-    <div className="space-y-8">
+    <div>
       <BlogList posts={posts} />
       {loading && (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+        <div className="flex justify-center py-10">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-accent/70"></div>
         </div>
       )}
       {!hasMore && posts.length > 0 && (
-        <div className="text-center py-8 text-textMuted">
-          - End of posts -
+        <div className="text-center py-10 text-textMuted text-sm">
+          <span className="border-t border-border/40 inline-block pt-2 px-4">No more posts</span>
         </div>
       )}
     </div>
