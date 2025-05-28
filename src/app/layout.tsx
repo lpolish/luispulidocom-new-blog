@@ -93,10 +93,8 @@ export default function RootLayout({
       <body className={`${inter.className} bg-background text-text antialiased`}>
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow container mx-auto px-4 py-8 animate-fade-in">
-            <div className="max-w-4xl mx-auto">
-              {children}
-            </div>
+          <main className="flex-grow animate-fade-in">
+            {children}
           </main>
           <Footer />
         </div>

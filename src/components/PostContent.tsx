@@ -134,7 +134,7 @@ export function PostContent({ content }: PostContentProps) {
   return (
     <div 
       ref={contentRef}
-      className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:text-accent2 prose-code:bg-black prose-code:px-2 prose-code:py-0.5 prose-code:rounded prose-pre:bg-black prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:border prose-pre:border-white/10 prose-blockquote:border-l-accent prose-blockquote:pl-4 prose-blockquote:italic"
+      className="prose prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-lg prose-p:leading-relaxed prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-code:text-accent2 prose-code:bg-black prose-code:px-2 prose-code:py-0.5 prose-code:rounded prose-pre:bg-black prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:border prose-pre:border-white/10 prose-blockquote:border-l-accent prose-blockquote:pl-4 prose-blockquote:italic [&_.reference-link]:text-accent [&_.reference-link]:no-underline [&_.reference-link]:hover:underline [&_.reference-link]:font-medium [&_.reference-link]:transition-colors [&_.reference-link]:duration-200"
       dangerouslySetInnerHTML={{ __html: content }}
     />
   );

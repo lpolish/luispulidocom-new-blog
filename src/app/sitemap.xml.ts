@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
-import { getAllPosts, Post } from '@/lib/api';
+import { getSortedPostsData } from '@/lib/posts';
+import { Post } from '@/lib/posts';
 
 type ChangeFreq = 'daily' | 'monthly' | 'always' | 'hourly' | 'weekly' | 'yearly' | 'never';
 
@@ -7,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://luispulido.com';
   
   // Get all blog posts
-  const posts = await getAllPosts();
+  const posts = await getSortedPostsData();
   
   // Static routes
   const staticRoutes = [
@@ -40,4 +41,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   return [...staticRoutes, ...postRoutes];
-} 
+}
