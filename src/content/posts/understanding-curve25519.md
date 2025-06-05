@@ -1,6 +1,6 @@
 ---
 title: "Curve25519: Engineering Excellence in Modern Cryptography"
-date: "2024-05-12"
+date: "2025-06-04"
 description: "An examination of Curve25519's mathematical foundations, implementation characteristics, and practical applications in modern cryptographic systems. Understanding the technical decisions that make this elliptic curve a cornerstone of secure communications."
 excerpt: "A technical analysis of Curve25519's design principles and implementation, explaining why it has become fundamental to modern cryptographic systems."
 tags: ["cryptography", "security", "mathematics", "elliptic-curves", "curve25519"]
