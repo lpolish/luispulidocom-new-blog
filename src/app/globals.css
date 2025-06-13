@@ -10,6 +10,21 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  padding: 0 1rem; /* Add padding to prevent text from touching the edges on mobile */
+}
+
+header {
+  margin: 0 -1rem; /* Ensure the header spans the full width on mobile */
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 0; /* Remove padding for larger screens */
+  }
+
+  header {
+    margin: 0; /* Reset header margin for larger screens */
+  }
 }
 
 /* Loading animations */
