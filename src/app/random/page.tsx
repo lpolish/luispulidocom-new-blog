@@ -46,6 +46,25 @@ const RandomPage = () => {
               An interactive kaleidoscope that reacts to your cursor movement. Move your mouse to create beautiful symmetrical patterns.
             </p>
           </Link>
+          <Link 
+            href="/random/smudge-canvas"
+            className="group block p-6 bg-card hover:bg-cardHover border border-border rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105"
+          >
+            <div className="flex items-center justify-center w-16 h-16 bg-accent/10 rounded-lg mb-4 group-hover:bg-accent/20 transition-colors">
+              <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                <path d="M8 12c1.5-2 6.5-2 8 0" strokeWidth="2" />
+                <circle cx="9" cy="10" r="1" fill="currentColor" />
+                <circle cx="15" cy="10" r="1" fill="currentColor" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-text mb-2 group-hover:text-accent transition-colors">
+              Smudge Canvas
+            </h3>
+            <p className="text-textMuted text-sm">
+              Draw with your mouse or touch to create evolving smudge trails. Colors smoothly transition through palettes for a mesmerizing effect.
+            </p>
+          </Link>
         </div>
       </div>
     </div>
