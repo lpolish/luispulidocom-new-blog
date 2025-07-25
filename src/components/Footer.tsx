@@ -20,11 +20,12 @@ const Footer = () => {
   ];
 
   const recentPosts = [
-    { slug: 'photobiomodulation-device-compliance', title: 'Photobiomodulation Device Compliance' },
-    { slug: 'crystals-kyber-quantum-resistant-encryption', title: 'Understanding CRYSTALS-Kyber and Post-Quantum Security' },
-    { slug: 'building-multilingual-nextjs-applications', title: 'Building Multilingual Next.js Applications' },
-    { slug: 'building-fortified-nextjs-applications', title: 'Building Fortified Next.js Applications' },
-    { slug: 'ai-gateways-llms-transform-route-knowledge', title: 'AI Gateways and LLMs: Transforming Knowledge Routing' }
+  { slug: 'photobiomodulation-device-compliance', title: 'Photobiomodulation Device Compliance' },
+  { slug: 'hipaa-ai-and-biotech-breakthroughs-mid-2025-update', title: 'Updates in HIPAA, AI, and Biotech: Mid-2025' },
+  { slug: 'crystals-kyber-quantum-resistant-encryption', title: 'Understanding CRYSTALS-Kyber and Post-Quantum Security' },
+  // ...existing code...
+  { slug: 'building-fortified-nextjs-applications', title: 'Building Fortified Next.js Applications' },
+  { slug: 'ai-gateways-llms-transform-route-knowledge', title: 'AI Gateways and LLMs: Transforming Knowledge Routing' }
   ];
 
   return (
