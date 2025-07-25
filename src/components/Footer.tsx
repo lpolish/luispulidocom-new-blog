@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getSortedPostsData } from '@/lib/posts';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
@@ -14,36 +15,36 @@ const Footer = () => {
   ];
 
   const randomLinks = [
-    { name: 'Kaleidoscope', href: '/random/kaleidoscope' }
+    { name: 'Kaleidoscope', href: '/random/kaleidoscope' },
+    { name: 'Smudge Canvas', href: '/random/smudge-canvas' }
   ];
-  
+
+  const recentPosts = [
+    { slug: 'crystals-kyber-quantum-resistant-encryption', title: 'Understanding CRYSTALS-Kyber and Post-Quantum Security' },
+    { slug: 'building-multilingual-nextjs-applications', title: 'Building Multilingual Next.js Applications' },
+    { slug: 'building-fortified-nextjs-applications', title: 'Building Fortified Next.js Applications' },
+    { slug: 'ai-gateways-llms-transform-route-knowledge', title: 'AI Gateways and LLMs: Transforming Knowledge Routing' },
+    { slug: 'hidden-network-traffic-directors', title: 'The Hidden Network Traffic Directors' }
+  ];
+
   return (
-    <footer className="bg-background/95 backdrop-blur-sm border-t border-border py-12 mt-auto">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-textMuted text-sm">
-              © {currentYear} Luis Pulido Díaz. All rights reserved.
-            </p>
-          </motion.div>
-          
-          <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
-            <motion.div 
+    <footer className="bg-background/95 backdrop-blur-sm border-t border-border py-10 mt-auto">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
+              className=""
             >
-              <h3 className="text-text font-medium mb-3 text-sm">Navigation</h3>
+              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Navigation</h3>
               <ul className="space-y-2">
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      href={link.href} 
-                      className="text-textMuted hover:text-accent text-sm transition-colors duration-300"
+                    <Link
+                      href={link.href}
+                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
                     >
                       {link.name}
                     </Link>
@@ -52,18 +53,19 @@ const Footer = () => {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className=""
             >
-              <h3 className="text-text font-medium mb-3 text-sm">Random</h3>
+              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Random</h3>
               <ul className="space-y-2">
                 {randomLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      href={link.href} 
-                      className="text-textMuted hover:text-accent text-sm transition-colors duration-300"
+                    <Link
+                      href={link.href}
+                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
                     >
                       {link.name}
                     </Link>
@@ -72,32 +74,57 @@ const Footer = () => {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex items-center"
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className=""
             >
-              <Link 
+              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Recent Posts</h3>
+              <ul className="space-y-2">
+                {recentPosts.map((post) => (
+                  <li key={post.slug}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
+                    >
+                      {post.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <p className="text-textMuted text-sm font-medium tracking-tight flex items-center justify-center gap-2">
+              © {currentYear} <span className="font-semibold text-text">Luis Pulido Díaz</span>. All rights reserved.
+              <Link
                 href="/rss.xml"
                 className="text-textMuted hover:text-accent transition-colors"
                 title="RSS Feed"
+                aria-label="RSS Feed"
               >
-                <svg 
-                  className="w-5 h-5" 
-                  fill="currentColor" 
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M19.199 24c-1.524 0-2.77-1.243-2.77-2.77 0-1.524 1.243-2.77 2.77-2.77 1.524 0 2.77 1.243 2.77 2.77 0 1.524-1.243 2.77-2.77 2.77zm-5.01-2.77c0 2.762-2.248 5.01-5.01 5.01-2.762 0-5.01-2.248-5.01-5.01 0-2.762 2.248-5.01 5.01-5.01 2.762 0 5.01 2.248 5.01 5.01zm-5.01-5.01c-2.762 0-5.01 2.248-5.01 5.01 0 2.762 2.248 5.01 5.01 5.01 2.762 0 5.01-2.248 5.01-5.01 0-2.762-2.248-5.01-5.01-5.01zm-5.01-5.01c-2.762 0-5.01 2.248-5.01 5.01 0 2.762 2.248 5.01 5.01 5.01 2.762 0 5.01-2.248 5.01-5.01 0-2.762-2.248-5.01-5.01-5.01z"/>
+                  <path d="M4.5 17.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0-7a9 9 0 0 1 9 9h2a11 11 0 0 0-11-11v2zm0-5a14 14 0 0 1 14 14h2A16 16 0 0 0 4.5 5v2z" />
                 </svg>
               </Link>
-            </motion.div>
-          </div>
+            </p>
+          </motion.div>
         </div>
       </div>
     </footer>
   );
 };
 
-export default Footer; 
+export default Footer;
