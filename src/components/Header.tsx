@@ -19,7 +19,6 @@ const navItems: NavItem[] = [
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const handleMenuToggle = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -49,25 +48,15 @@ const Header = () => {
     };
   }, [isMenuOpen, handleMenuClose]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <>
       {/* Header Layer */}
-      <header
-        className={`sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-300 ${
-          isScrolled ? 'h-10 py-1.5 text-sm leading-tight' : 'h-16 py-4 text-base leading-normal'
-        }`}
-      >
+    <header
+      className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border h-14 py-3 text-base leading-normal transition-all duration-300"
+    >
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-full">
+          <div className="flex items-center justify-between h-full"> 
+            {/* Logo/Brand Name */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -164,7 +153,7 @@ const Header = () => {
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation menu"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
             >
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-end p-4 border-b border-border/20">

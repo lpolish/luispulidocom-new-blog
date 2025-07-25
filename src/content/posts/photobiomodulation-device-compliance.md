@@ -15,6 +15,8 @@ Photobiomodulation (PBM) devices harness light to promote healing, reduce pain, 
 
 PBM devices rely on precise control of light parameters—wavelength, irradiance, fluence, and pulse duration—to achieve therapeutic effects. These parameters must remain consistent across varied clinical settings, including surgical suites or outpatient clinics, to ensure reliable outcomes.
 
+At [PBM Hospital](https://pbmhospital.mx/en/home/), our clinical team works closely with device developers to ensure these technical standards translate into real-world patient benefits. This collaboration helps bridge the gap between engineering and clinical application, making PBM therapies more effective and accessible.
+
 The core of a PBM device lies in its optical components, LEDs or lasers, which must deliver stable, targeted light. For instance, a device designed for tissue repair might require a 660 nm wavelength with an irradiance of 5 mW/cm², maintained within tight tolerances. Thermal stability is critical, as heat can shift wavelengths or degrade components, reducing efficacy. Developers must also account for tissue-specific factors, like chromophore absorption or tissue depth, which influence dosing protocols and require adaptive designs tailored to patient needs.
 
 ## Navigating Regulatory Requirements
@@ -41,7 +43,7 @@ Successful submissions include photodosimetry data, real-time irradiance measure
 
 ## Bringing Light to Life: The Impact of PBM Devices in Specialized Care
 
-The core purpose of PBM device development is its tangible impact on patient outcomes. These devices are precise instruments of healing, aiding individuals across a spectrum of needs. Consider the role of PBM in **oncology support**, where it can significantly alleviate painful side effects like oral mucositis from chemotherapy, thereby improving a patient's quality of life. In **anti-aging applications**, PBM offers targeted solutions for skin rejuvenation, reducing inflammatory markers associated with aging, and improving skin elasticity. Our involvement extends beyond developing devices; we actively deliver these therapies. For example, at **PBM Hospital**, a leading clinic specializing in comprehensive PBM treatments, we directly observe the positive transformations in patients. This practical experience provides crucial insights that directly inform the design and refinement of our devices.
+The core purpose of PBM device development is its tangible impact on patient outcomes. These devices are precise instruments of healing, aiding individuals across a spectrum of needs. Consider the role of PBM in **oncology support**, where it can significantly alleviate painful side effects like oral mucositis from chemotherapy, thereby improving a patient's quality of life. In **anti-aging applications**, PBM offers targeted solutions for skin rejuvenation, reducing inflammatory markers associated with aging, and improving skin elasticity. Our involvement extends beyond developing devices; we actively deliver these therapies. For example, at [PBM Hospital](https://pbmhospital.mx/en/home/), a leading clinic specializing in comprehensive PBM treatments, we directly observe the positive transformations in patients. This practical experience provides crucial insights that directly inform the design and refinement of our devices.
 
 ## Building Robust Manufacturing Processes
 
@@ -58,6 +60,8 @@ Modern PBM devices often rely on software to manage dosing and safety. IEC 62304
 ## Integrating PBM into Clinical Workflows
 
 For PBM devices to succeed, they must integrate seamlessly into clinical settings. In surgical environments, this means designing compact, user-friendly devices that staff can operate without disrupting workflows. Intuitive interfaces and compatibility with existing equipment enhance adoption.
+
+Our experience at [PBM Hospital](https://pbmhospital.mx/en/home/) has shown that close collaboration between clinicians and engineers is key to successful device integration. By observing how PBM devices are used in daily practice, we continually refine our designs to better meet the needs of both patients and healthcare professionals.
 
 Clinical evidence is vital for regulatory approval and clinician trust. Studies should include standardized outcomes, wound healing rates, alongside biomarker data to demonstrate PBM’s effects. Long-term follow-up captures delayed benefits, which are common in PBM applications.
 
@@ -77,4 +81,4 @@ To create effective PBM devices, developers should follow these actionable steps
 
 ### Enhancing Anti Aging and Oncology Care
 
-PBM Hospital is dedicated to advancing healthcare through precise PBM solutions for anti-aging and oncology support. From initial photonic design to rigorous clinical validation, our unwavering commitment to excellence ensures our devices offer significant safety and efficacy. We harness the profound capability of light to transform patient outcomes. Through both the development of advanced PBM devices and the provision of direct therapy—as demonstrated in our specialized centers, including PBM Hospital in Tijuana—we are uniquely positioned to serve the evolving needs of the medical community and their patients. Join us as we illuminate new paths to enhanced well-being and recovery.
+At [PBM Hospital](https://pbmhospital.mx/en/home/), we are dedicated to advancing healthcare through precise PBM solutions for anti-aging and oncology support. From initial photonic design to rigorous clinical validation, our unwavering commitment to excellence ensures our devices offer significant safety and efficacy. We harness the profound capability of light to transform patient outcomes. Through both the development of advanced PBM devices and the provision of direct therapy—as demonstrated in our specialized centers, including PBM Hospital in Tijuana—we are uniquely positioned to serve the evolving needs of the medical community and their patients. Join us as we illuminate new paths to enhanced well-being and recovery.
