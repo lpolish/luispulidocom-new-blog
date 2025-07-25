@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import type { Post } from '@/lib/posts';
 
 interface BlogListProps {
@@ -43,7 +42,7 @@ export function BlogList({ posts }: BlogListProps) {
             className={`card-item ${featured ? 'md:col-span-2' : ''}`}
           >
             <div className="bg-primary/20 backdrop-blur-sm rounded-lg overflow-hidden border border-border/60 p-6 transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 h-full flex flex-col">
-              <p className="text-xs text-accent mb-2 font-mono opacity-80">{post.date}</p>
+              <p className="text-xs text-accent/90 mb-2 font-mono">{post.date}</p>
               
               <h2 className={`${featured ? 'text-2xl' : 'text-xl'} font-bold mb-3 flex-none tracking-tight`}>
                 <Link 
@@ -73,7 +72,7 @@ export function BlogList({ posts }: BlogListProps) {
                       </span>
                     ))}
                     {post.tags.length > (featured ? 3 : 2) && (
-                      <span className="text-textMuted text-xs px-1 opacity-70">+{post.tags.length - (featured ? 3 : 2)}</span>
+                      <span className="text-textMuted/80 text-xs px-1">+{post.tags.length - (featured ? 3 : 2)}</span>
                     )}
                   </div>
                 )}
