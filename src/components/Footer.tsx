@@ -121,6 +121,23 @@ const Footer = () => {
                 </svg>
               </Link>
             </p>
+            <div className="flex flex-wrap justify-center gap-4 mt-2">
+              <Link
+                href="/terms-of-service"
+                className="text-textMuted hover:text-accent text-xs underline transition-colors"
+                title="Terms of Service"
+              >
+                Terms of Service
+              </Link>
+              <span className="text-textMuted text-xs">|</span>
+              <Link
+                href="/privacy"
+                className="text-textMuted hover:text-accent text-xs underline transition-colors"
+                title="Privacy Policy"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>
