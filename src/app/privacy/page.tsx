@@ -1,5 +1,3 @@
-// Privacy Policy
-
 export default function PrivacyPolicyPage() {
   return (
     <main className="prose mx-auto p-8">
