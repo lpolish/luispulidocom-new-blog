@@ -11,6 +11,8 @@ import { rehypeStoreCodeContent } from './rehypeStoreCodeContent';
 import remarkGfm from 'remark-gfm';
 import { rehypeReferences } from './rehypeReferences';
 
+import { rehypeYoutubeEmbed } from './rehypeYoutubeEmbed';
+
 const postsDirectory = path.join(process.cwd(), 'src/content/posts');
 
 export interface Post {
@@ -80,6 +82,7 @@ export async function getPostData(slug: string): Promise<Post> {
       .use(math)
       .use(remarkGfm)
       .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeYoutubeEmbed)
       .use(rehypeStoreCodeContent)
       .use(rehypeKatex)
       .use(rehypeHighlight)
