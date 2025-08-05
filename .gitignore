@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Ignore generated RSS and recent posts JSON
+public/rss.xml
+public/recent-posts.json

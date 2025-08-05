@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getSortedPostsData } from '@/lib/posts';
+import { useEffect, useState } from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,20 +19,30 @@ const Footer = () => {
     { name: 'Smudge Canvas', href: '/random/smudge-canvas' }
   ];
 
-  const recentPosts = [
-  { slug: 'photobiomodulation-device-compliance', title: 'Photobiomodulation Device Compliance' },
-  { slug: 'hipaa-ai-and-biotech-breakthroughs-mid-2025-update', title: 'Updates in HIPAA, AI, and Biotech: Mid-2025' },
-  { slug: 'crystals-kyber-quantum-resistant-encryption', title: 'Understanding CRYSTALS-Kyber and Post-Quantum Security' },
-  // ...existing code...
-  { slug: 'building-fortified-nextjs-applications', title: 'Building Fortified Next.js Applications' },
-  { slug: 'ai-gateways-llms-transform-route-knowledge', title: 'AI Gateways and LLMs: Transforming Knowledge Routing' }
-  ];
+  const [recentPosts, setRecentPosts] = useState<{ slug: string; title: string }[]>([]);
+  const [recentPostsError, setRecentPostsError] = useState(false);
+  useEffect(() => {
+    fetch('/recent-posts.json')
+      .then(res => {
+        if (!res.ok) throw new Error('Not found');
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setRecentPosts(data);
+        } else {
+          setRecentPostsError(true);
+        }
+      })
+      .catch(() => setRecentPostsError(true));
+  }, []);
 
   return (
     <footer className="bg-background/95 backdrop-blur-sm border-t border-border py-10 mt-auto">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+            {/* ...existing code for Navigation and Random columns... */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,26 +85,71 @@ const Footer = () => {
               </ul>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className=""
-            >
-              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Recent Posts</h3>
-              <ul className="space-y-2">
-                {recentPosts.map((post) => (
-                  <li key={post.slug}>
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
-                    >
-                      {post.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+            {recentPostsError || recentPosts.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="col-span-2 flex items-center justify-center text-textMuted text-sm"
+              >
+                <span>No recent posts available.</span>
+              </motion.div>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.25 }}
+                  className=""
+                >
+                  <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Recent Posts</h3>
+                  <ul className="space-y-2">
+                    {recentPosts.slice(0, Math.ceil(recentPosts.length / 2)).map((post: { slug: string; title: string }) => (
+                      <li key={post.slug} className="flex items-center gap-2">
+                        <span className="select-none" aria-hidden="true">
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="4" height="2" rx="1" fill="currentColor" className="text-accent" />
+                          </svg>
+                        </span>
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
+                        >
+                          {post.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className=""
+                >
+                  {/* No title for second column, push items one row below by adding an empty li */}
+                  <ul className="space-y-2">
+                    <li key="recent-posts-spacer" aria-hidden="true">&nbsp;</li>
+                    {recentPosts.slice(Math.ceil(recentPosts.length / 2)).map((post: { slug: string; title: string }) => (
+                      <li key={post.slug} className="flex items-center gap-2">
+                        <span className="select-none" aria-hidden="true">
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="4" height="2" rx="1" fill="currentColor" className="text-accent" />
+                          </svg>
+                        </span>
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
+                        >
+                          {post.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </>
+            )}
           </div>
 
           <motion.div
