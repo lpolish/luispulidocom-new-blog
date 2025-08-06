@@ -12,7 +12,7 @@ export default async function AdminChessPage() {
     redirect('/login');
   }
 
-  // Fetch pending game requests
+  // Fetch pending game requests (only join white player's profile as 'profiles')
   const { data: pendingGames, error } = await supabase
     .from('games')
     .select(`
@@ -22,8 +22,7 @@ export default async function AdminChessPage() {
       status,
       game_type,
       created_at,
-      profiles!white_player_id(username),
-      profiles!black_player_id(username)
+      profiles:profiles!white_player_id(username)
     `)
     .eq('status', 'pending_request')
     .order('created_at', { ascending: false });
@@ -32,6 +31,12 @@ export default async function AdminChessPage() {
     console.error('Error fetching games:', error);
   }
 
+  // Map profiles from array to single object for each game
+  const mappedGames = (pendingGames || []).map((g: any) => ({
+    ...g,
+    profiles: Array.isArray(g.profiles) ? g.profiles[0] : g.profiles
+  }));
+
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8">Chess Admin Dashboard</h1>
@@ -39,8 +44,8 @@ export default async function AdminChessPage() {
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold mb-4">Pending Game Requests</h2>
         
-        {pendingGames && pendingGames.length > 0 ? (
-          <GameRequestManager games={pendingGames} />
+        {mappedGames && mappedGames.length > 0 ? (
+          <GameRequestManager games={mappedGames} />
         ) : (
           <p className="text-gray-600 dark:text-gray-300">
             No pending game requests at the moment.
