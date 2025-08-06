@@ -1,0 +1,40 @@
+nohup: ignoring input
+
+> luispulidocom-new-blog@0.1.0 dev /home/luis/source/mio/blog
+> next dev
+
+   ▲ Next.js 14.1.0
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ✓ Ready in 2.3s
+ ✓ Compiled /src/middleware in 282ms (136 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 6.4s (2047 modules)
+ ✓ Compiled in 923ms (650 modules)
+ ✓ Compiled in 966ms (2047 modules)
+ ✓ Compiled in 232ms (650 modules)
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ✓ Compiled in 560ms (786 modules)
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ✓ Compiled in 354ms (650 modules)
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ✓ Compiled in 624ms (786 modules)
+   Reload env: .env.local
+ ⚠ Duplicate page detected. src/app/sitemap.xml.ts and src/app/sitemap.xml/route.ts resolve to /sitemap.xml
+ ✓ Compiled in 279ms (772 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (116kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 763ms (807 modules)
+ ○ Compiling /not-found ...
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /not-found in 2.3s (1598 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 253ms (1598 modules)
+ ✓ Compiled /favicon.ico in 278ms (867 modules)
