@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import AuthButton from "@/components/AuthButton";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -96,11 +97,14 @@ export default function RootLayout({
           <Header />
           <main className="flex-grow animate-fade-in">
             {children}
+            <Analytics />
+            <SpeedInsights />
           </main>
+          <div className="absolute top-0 right-0 p-4">
+            <AuthButton />
+          </div>
           <Footer />
         </div>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
