@@ -5,7 +5,7 @@ import { Chess } from "chess.js";
 import Chessboard from "chessboardjsx";
 import { Button } from "@/components/ui/button";
 
-const STOCKFISH_WORKER_URL = "/stockfish-worker.js";
+const STOCKFISH_WORKER_URL = "/stockfish/stockfish-worker.js";
 
 export default function ChessGame() {
 	const game = useMemo(() => new Chess(), []);
@@ -48,18 +48,24 @@ export default function ChessGame() {
 		setStockfishWorker(null);
 	}, [gameMode]);
 
-	// Listen for Stockfish bestmove
+	// Listen for Stockfish bestmove and engine logs
 	useEffect(() => {
 		if (!stockfishWorker) return;
 		const handleMessage = (e: MessageEvent) => {
 			const msg = e.data;
-			if (typeof msg === "string" && msg.startsWith("bestmove")) {
-				const move = msg.split(" ")[1];
-				if (move && move !== "(none)") {
-					game.move({ from: move.slice(0, 2), to: move.slice(2, 4), promotion: "q" });
-					setGamePosition(game.fen());
-					updateGameStatus();
-					setIsThinking(false);
+			if (typeof msg === "string") {
+				if (msg.startsWith("[Worker]")) {
+					// Log engine status messages
+					console.log(msg);
+				}
+				if (msg.startsWith("bestmove")) {
+					const move = msg.split(" ")[1];
+					if (move && move !== "(none)") {
+						game.move({ from: move.slice(0, 2), to: move.slice(2, 4), promotion: "q" });
+						setGamePosition(game.fen());
+						updateGameStatus();
+						setIsThinking(false);
+					}
 				}
 			}
 		};

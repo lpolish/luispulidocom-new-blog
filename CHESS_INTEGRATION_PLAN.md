@@ -91,7 +91,9 @@ Here is the proposed architecture for the new chess section.
 
 ## Next Steps: Enabling Play vs AI with Local Stockfish
 
-To optimize the "Play vs AI" experience and avoid backend calls, we will use a local Stockfish engine (WebAssembly) in the browser. Here is the updated implementation guide:
+## Next Steps: Enabling Play vs AI with Local Stockfish (Optimized Loading Strategy)
+
+To optimize the "Play vs AI" experience and avoid backend calls, we will use a local Stockfish engine in the browser, prioritizing support for WebAssembly (WASM), then JavaScript, and finally falling back to an API if needed. Here is the updated implementation guide:
 
 ### Part A: Setup and Authentication
 
@@ -106,12 +108,14 @@ To optimize the "Play vs AI" experience and avoid backend calls, we will use a l
 
 7. **Create Chess Page:** Create the main page at `/chess`.
 8. **Develop Chessboard Component:** Create a new component that wraps `react-chessboard` and `chess.js`. This component will manage the board's state, handle user moves, and validate them.
-9. **Integrate Local Stockfish (WASM):**
-    - Add Stockfish WebAssembly (WASM) worker to the `public/` directory (e.g., `stockfish-worker.js`).
-    - Update the chess game component to send the current FEN to Stockfish and receive the best move.
+9. **Integrate Local Stockfish (WASM/JS Fallback/API):**
+    - Move all Stockfish JS and WASM files into `public/stockfish/` for better organization.
+    - Update the chess game worker to first attempt loading the WASM version (e.g., `stockfish-16.1.wasm` with its JS loader).
+    - If WASM fails to load, fallback to a JS-only version (e.g., `stockfish-16.1.js`).
+    - If both local engines fail, fallback to a remote API for move calculation (to be implemented or selected).
     - On each player move, send the updated FEN to Stockfish, parse the best move, and apply it to the board.
     - Show "AI is thinking..." while waiting for Stockfish's response.
-    - Handle errors or fallback to random moves if Stockfish fails to load.
+    - Handle errors gracefully and log which engine is being used.
 
 10. **Game State Management:**
     - Optionally, allow saving/retrieving games vs AI for logged-in users.
@@ -131,6 +135,43 @@ To optimize the "Play vs AI" experience and avoid backend calls, we will use a l
 14. **Implement "Request Game" Flow:** Add the UI and logic for a user to send a game request to me.
 15. **Create Admin Dashboard:** Build the private page for me to view and manage game requests.
 16. **Enable Real-Time Updates:** Use Supabase Realtime Subscriptions to make the games interactive between two players.
+
+---
+
+
+---
+
+## Status Update (2025-08-07)
+
+### Current Flow and Implementation
+
+**Frontend:**
+- Chess game UI is implemented using React and `chessboardjsx`.
+- Game logic is managed with `chess.js`.
+- The AI mode uses a Web Worker to communicate with Stockfish.
+- The worker is loaded from `/stockfish/stockfish-worker.js` and attempts to load Stockfish WASM, then JS, then fallback to API (not yet implemented).
+- The UI blocks further moves while waiting for Stockfish to respond, showing "thinking..." status.
+- Only valid moves are allowed, and only when it is the player's turn.
+
+**Worker:**
+- The worker now has robust logging for initialization, command receipt, and Stockfish output.
+- It attempts to load WASM first, then JS, and logs all steps and errors.
+- Commands are forwarded to Stockfish, and relevant output (`bestmove`, etc.) is posted back to the main thread.
+- Debug and status messages are visible in the browser console for troubleshooting.
+
+**Current Issue:**
+- After the first player move, the worker receives the command but Stockfish does not respond with a `bestmove`.
+- The UI correctly blocks further moves, but does not update or show the AI's move.
+- No errors are shown, but more logging is now available for diagnosis.
+
+### Next Steps for Testing and Debugging
+1. Test the chess game in the browser and monitor the console for `[Worker-LOG]` and `[Stockfish]` messages.
+2. Confirm that the worker is initialized and receiving commands after each move.
+3. Check if Stockfish is posting output (especially `bestmove`) back to the main thread.
+4. If no output is received, verify the Stockfish JS/WASM files are correct and compatible with the worker interface.
+5. If needed, add more logging to the frontend to display worker status and errors in the UI.
+6. Once Stockfish responds, ensure the UI updates with the AI's move and unblocks the player.
+7. Document any further issues and update the plan before continuing with new features.
 
 ---
 
