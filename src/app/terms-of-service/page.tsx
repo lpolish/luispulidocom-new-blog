@@ -1,5 +1,4 @@
-"use client";
-export const dynamic = 'force-static';
+import { dynamic, metadata } from './metadata';
 export default function TermsOfServicePage() {
   return (
     <main className="prose mx-auto p-8">

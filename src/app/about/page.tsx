@@ -1,32 +1,18 @@
 
-import { dynamic, metadata } from './metadata';
+// Removed import of dynamic and metadata for static rendering
 import Link from 'next/link';
 
 export default function About() {
   return (
     <div className="max-w-3xl mx-auto pt-20">
-      <h1 className="text-3xl md:text-4xl font-bold mb-6">About Me</h1>
-      
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">About</h1>
       <div className="bg-primary rounded-lg p-8 shadow-lg">
-        <p className="mb-4">
-          I'm Luis, a software engineer who's been building things for over 12 years. I've worked across different industries, always with one goal: making systems that don't just work, but work well.
-        </p>
-        
-        <p className="mb-4">
-          I build modern web applications that scale efficiently. I care about clean code, but I care more about solving real problems and delivering results that matter.
-        </p>
-        
-        <p className="mb-8">
-          This blog is where I share what I learn along the way. No fluff, just the stuff that matters.
-        </p>
-        
+        <p className="mb-6">This site is a place to share ideas and connect.</p>
+        <div className="mt-8 text-sm text-textMuted">
+          <p>You can also find me on <a href="https://github.com/lpolish" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">GitHub</a> and <a href="https://x.com/pulidoman" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">X</a>.</p>
+        </div>
         <div className="mt-8">
-          <Link 
-            href="/contact" 
-            className="px-6 py-3 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors inline-block"
-          >
-            Let's Connect
-          </Link>
+          <Link href="/contact" className="px-6 py-3 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors inline-block">Contact</Link>
         </div>
       </div>
     </div>

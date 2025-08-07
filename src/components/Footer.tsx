@@ -1,6 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+// Dynamically import ChessGame for client-side only rendering
+const ChessGame = dynamic(() => import('./ChessGame'), { ssr: false });
+
+function ChessGameFooterWrapper() {
+  // Only render on desktop
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
+  return <ChessGame />;
+}
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -14,10 +23,7 @@ const Footer = () => {
     { name: 'Contact', href: '/contact' }
   ];
 
-  const randomLinks = [
-    { name: 'Kaleidoscope', href: '/random/kaleidoscope' },
-    { name: 'Smudge Canvas', href: '/random/smudge-canvas' }
-  ];
+  // Removed randomLinks since random pages are deleted
 
   const [recentPosts, setRecentPosts] = useState<{ slug: string; title: string }[]>([]);
   const [recentPostsError, setRecentPostsError] = useState(false);
@@ -43,6 +49,16 @@ const Footer = () => {
         <div className="flex flex-col gap-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
             {/* ...existing code for Navigation and Random columns... */}
+            {/* Desktop-only Chess Play Section */}
+            <div className="hidden md:block col-span-1">
+              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Play Chess</h3>
+              <div
+                className="bg-background border border-border rounded-lg p-4 flex flex-col items-center justify-center"
+                style={{ minWidth: 220, maxWidth: 340, width: '100%', position: 'relative', overflow: 'visible' }}
+              >
+                <ChessGameFooterWrapper />
+              </div>
+            </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -64,26 +80,7 @@ const Footer = () => {
               </ul>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className=""
-            >
-              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Random</h3>
-              <ul className="space-y-2">
-                {randomLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+            {/* Removed Random section from footer */}
 
             {recentPostsError || recentPosts.length === 0 ? (
               <motion.div

@@ -1,39 +1,52 @@
-import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { redirect } from 'next/navigation'
+"use client";
 
-export default async function AuthButton() {
-  const supabase = createClient()
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { createClient } from '@/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export default function AuthButton() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const signOut = async () => {
-    'use server'
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user ?? null);
+      setLoading(false);
+    });
+  }, []);
 
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    return redirect('/login')
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  if (loading) {
+    return null;
   }
 
-  return user ? (
-    <div className="flex items-center gap-4">
-      <span className="text-sm text-gray-600 dark:text-gray-300">
-        Hey, {user.email}!
-      </span>
-      <form action={signOut}>
-        <Button variant="outline" size="default">
+  if (user) {
+    return (
+      <div className="flex items-center gap-4">
+        <span className="text-sm text-gray-600 dark:text-gray-300">
+          Hey, {user.email}!
+        </span>
+        <Button variant="outline" size="default" onClick={handleLogout}>
           Logout
         </Button>
-      </form>
-    </div>
-  ) : (
-    <Link href="/login">
-      <Button variant="outline" size="default">
-        Login
-      </Button>
-    </Link>
-  )
+      </div>
+    );
+  } else {
+    return (
+      <Link href="/login">
+        <Button variant="outline" size="default">
+          Login
+        </Button>
+      </Link>
+    );
+  }
 }
+
