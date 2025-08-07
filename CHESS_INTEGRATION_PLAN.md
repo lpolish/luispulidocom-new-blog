@@ -88,34 +88,52 @@ Here is the proposed architecture for the new chess section.
 
 ### 3. Step-by-Step Implementation Plan
 
-I will follow these steps to build the features.
 
-**Part A: Setup and Authentication**
+## Next Steps: Enabling Play vs AI with Local Stockfish
 
-1.  **Create Supabase Project:** Initialize a new project on Supabase.
-2.  **Install Dependencies:** Add ` @supabase/supabase-js`, `@supabase/auth-helpers-nextjs`, `react-chessboard`, and `chess.js` to the project.
-3.  **Environment Setup:** Configure Supabase URL and keys in the Next.js environment variables (`.env.local`).
-4.  **Supabase Client:** Create a Supabase client instance for use across the application.
-5.  **Authentication UI:** Create simple UI components for Login, Logout, and displaying the user's status. Integrate Supabase's authentication logic.
-6.  **Create `profiles` Table:** Set up the `profiles` table in Supabase and create a trigger that automatically adds a new profile when a new user signs up.
+To optimize the "Play vs AI" experience and avoid backend calls, we will use a local Stockfish engine (WebAssembly) in the browser. Here is the updated implementation guide:
 
-**Part B: Core Chess Functionality**
+### Part A: Setup and Authentication
 
-7.  **Create Chess Page:** Create the main page at `/chess`.
-8.  **Develop Chessboard Component:** Create a new component that wraps `react-chessboard` and `chess.js`. This component will manage the board's state, handle user moves, and validate them.
-9.  **Integrate Stockfish:** Add the client-side Stockfish engine. Implement the logic for the AI to make a move after the human player. This will complete the "Player vs. AI" feature.
+1. **Create Supabase Project:** Initialize a new project on Supabase.
+2. **Install Dependencies:** Add `@supabase/supabase-js`, `@supabase/auth-helpers-nextjs`, `react-chessboard`, and `chess.js` to the project.
+3. **Environment Setup:** Configure Supabase URL and keys in the Next.js environment variables (`.env.local`).
+4. **Supabase Client:** Create a Supabase client instance for use across the application.
+5. **Authentication UI:** Create simple UI components for Login, Logout, and displaying the user's status. Integrate Supabase's authentication logic.
+6. **Create `profiles` Table:** Set up the `profiles` table in Supabase and create a trigger that automatically adds a new profile when a new user signs up.
 
-**Part C: Database-Driven Gameplay**
+### Part B: Core Chess Functionality
 
-10. **Create `games` Table:** Create the `games` table in the Supabase database as per the schema.
-11. **Game State Management:** Develop functions to:
-    *   Create a new game in the database.
-    *   Load an existing game from the database.
-    *   Update a game's state (FEN and PGN) after each move.
-12. **Implement "Request Game" Flow:** Add the UI and logic for a user to send a game request to me.
-13. **Create Admin Dashboard:** Build the private page for me to view and manage game requests.
-14. **Enable Real-Time Updates:** Use Supabase Realtime Subscriptions to make the games interactive between two players.
+7. **Create Chess Page:** Create the main page at `/chess`.
+8. **Develop Chessboard Component:** Create a new component that wraps `react-chessboard` and `chess.js`. This component will manage the board's state, handle user moves, and validate them.
+9. **Integrate Local Stockfish (WASM):**
+    - Add Stockfish WebAssembly (WASM) worker to the `public/` directory (e.g., `stockfish-worker.js`).
+    - Update the chess game component to send the current FEN to Stockfish and receive the best move.
+    - On each player move, send the updated FEN to Stockfish, parse the best move, and apply it to the board.
+    - Show "AI is thinking..." while waiting for Stockfish's response.
+    - Handle errors or fallback to random moves if Stockfish fails to load.
+
+10. **Game State Management:**
+    - Optionally, allow saving/retrieving games vs AI for logged-in users.
+    - Store completed games in Supabase for history/analysis.
+
+11. **UI/UX Enhancements:**
+    - Add a difficulty selector (Stockfish skill level).
+    - Show move analysis or hints from Stockfish if desired.
+
+### Part C: Database-Driven Gameplay
+
+12. **Create `games` Table:** Create the `games` table in the Supabase database as per the schema.
+13. **Game State Management:**
+    - Create a new game in the database.
+    - Load an existing game from the database.
+    - Update a game's state (FEN and PGN) after each move.
+14. **Implement "Request Game" Flow:** Add the UI and logic for a user to send a game request to me.
+15. **Create Admin Dashboard:** Build the private page for me to view and manage game requests.
+16. **Enable Real-Time Updates:** Use Supabase Realtime Subscriptions to make the games interactive between two players.
 
 ---
+
+_This document will be updated as the project progresses._
 
 _This document will be updated as the project progresses._

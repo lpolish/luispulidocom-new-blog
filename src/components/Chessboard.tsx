@@ -1,8 +1,8 @@
 "use client";
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Chess } from "chess.js";
 import { Button } from "@/components/ui/button";
+import { StockfishWorker } from "@/lib/stockfishWorker";
 import type { Square, PieceSymbol, Color } from "chess.js";
 
 // Unicode chess pieces
@@ -45,6 +45,14 @@ export default function ChessboardComponent() {
   const [gameStatus, setGameStatus] = useState("In Progress");
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [validMoves, setValidMoves] = useState<Square[]>([]);
+  const [aiThinking, setAiThinking] = useState(false);
+  const stockfishRef = useRef<StockfishWorker | null>(null);
+
+  // Initialize Stockfish worker once
+  if (!stockfishRef.current) {
+    stockfishRef.current = new StockfishWorker();
+    stockfishRef.current.setSkillLevel(10); // Default skill level
+  }
 
   function makeAMove(move: any) {
     try {
@@ -62,6 +70,24 @@ export default function ChessboardComponent() {
     return false;
   }
 
+  async function makeAIMove() {
+    setAiThinking(true);
+    const fen = game.fen();
+    try {
+      const bestMove = await stockfishRef.current!.getBestMove(fen);
+      const moveResult = makeAMove(bestMove);
+      if (!moveResult) {
+        // Fallback to random move if Stockfish move fails
+        makeRandomMove();
+      }
+    } catch (err) {
+      // Stockfish failed, fallback to random move
+      makeRandomMove();
+    } finally {
+      setAiThinking(false);
+    }
+  }
+
   function makeRandomMove() {
     const possibleMoves = game.moves();
     if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
@@ -72,7 +98,8 @@ export default function ChessboardComponent() {
     makeAMove(possibleMoves[randomIndex]);
   }
 
-  function onSquareClick(square: Square) {
+  async function onSquareClick(square: Square) {
+    if (aiThinking) return; // Prevent moves while AI is thinking
     if (selectedSquare) {
       // Try to make a move
       const move = {
@@ -84,7 +111,7 @@ export default function ChessboardComponent() {
       const moveSuccessful = makeAMove(move);
       if (moveSuccessful) {
         // If human made a move, computer makes a move after a short delay
-        setTimeout(makeRandomMove, 500);
+        setTimeout(makeAIMove, 500);
       } else {
         // If move failed, select the new square if it has a piece
         const piece = game.get(square);
@@ -163,6 +190,9 @@ export default function ChessboardComponent() {
       <p className="text-sm text-gray-600 mt-2">
         {game.turn() === 'w' ? "White to move" : "Black to move"}
       </p>
+      {aiThinking && (
+        <p className="text-sm text-purple-600 mt-2">AI is thinking…</p>
+      )}
       {selectedSquare && (
         <p className="text-sm text-blue-600 mt-1">
           Selected: {selectedSquare}

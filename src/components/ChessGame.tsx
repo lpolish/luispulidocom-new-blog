@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { Chess } from "chess.js";
-import { Chessboard } from "react-chessboard";
+import Chessboard from "chessboardjsx";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import type { Square } from "chess.js";
@@ -16,7 +16,7 @@ export default function ChessGame({ user }: ChessGameProps) {
   const [gamePosition, setGamePosition] = useState(game.fen());
   const [gameStatus, setGameStatus] = useState("In Progress");
   const [isThinking, setIsThinking] = useState(false);
-  const [gameMode, setGameMode] = useState<'ai' | 'human' | null>(null);
+  const [gameMode, setGameMode] = useState<string | null>(null);
   const [stockfishWorker, setStockfishWorker] = useState<Worker | null>(null);
   const supabase = createClient();
 
@@ -171,11 +171,9 @@ export default function ChessGame({ user }: ChessGameProps) {
             Select how you'd like to play chess
           </p>
         </div>
-        
         <Button onClick={startAIGame} className="w-full max-w-xs">
           🤖 Play vs AI
         </Button>
-        
         {user ? (
           <Button onClick={requestGameVsLuis} variant="outline" className="w-full max-w-xs">
             👨‍💻 Request Game vs Me
@@ -189,23 +187,30 @@ export default function ChessGame({ user }: ChessGameProps) {
     );
   }
 
+  // Minimal Chessboardjsx for debugging
+  if (gameMode === 'ai') {
+    return (
+      <div className="flex flex-col items-center">
+        <div className="mb-4 w-full max-w-md">
+          <Chessboard position="start" width={400} />
+        </div>
+        <p className="text-green-600">chessboardjsx: If you see the board, integration is working.</p>
+        <Button onClick={() => setGameMode(null)} variant="outline">
+          Change Mode
+        </Button>
+      </div>
+    );
+  }
+
+  // Defensive: always use a valid FEN string
+  const safePosition = gamePosition || 'start';
   return (
     <div className="flex flex-col items-center">
       <div className="mb-4 w-full max-w-md">
-        <Chessboard
-          options={{
-            position: gamePosition,
-            onPieceDrop: ({ sourceSquare, targetSquare }) => 
-              onPieceDrop(sourceSquare as Square, targetSquare as Square),
-            boardOrientation: "white",
-            allowDragging: true,
-          }}
-        />
+        <Chessboard position={safePosition} width={400} />
       </div>
-      
       <div className="text-center space-y-2">
         <p className="text-lg font-semibold">{gameStatus}</p>
-        
         {gameMode === 'ai' && (
           <>
             <p className="text-sm text-gray-600">
