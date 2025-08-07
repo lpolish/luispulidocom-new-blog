@@ -2,8 +2,7 @@ import { getSortedPostsData } from '@/lib/posts';
 import { generateRssFeed } from '@/lib/rss';
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'force-static';
 
 export async function GET() {
   try {

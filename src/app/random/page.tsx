@@ -1,14 +1,6 @@
-import type { Metadata } from "next";
-import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Random | Luis Pulido Díaz",
-  description: "Random creative experiments and interactive visualizations",
-  openGraph: {
-    title: "Random | Luis Pulido Díaz",
-    description: "Random creative experiments and interactive visualizations",
-  },
-};
+import { dynamic, metadata } from './metadata';
+import Link from "next/link";
 
 const RandomPage = () => {
   return (
