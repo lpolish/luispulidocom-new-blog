@@ -1,10 +1,7 @@
 import ContactForm from '@/components/ContactForm';
 import ReCAPTCHA from '@/components/ReCAPTCHA';
 
-export const metadata = {
-  title: 'Contact | Luis Pulido',
-  description: 'Get in touch with Luis Pulido',
-};
+import { dynamic, metadata } from './metadata';
 
 export default function Contact() {
   return (

@@ -1,4 +1,5 @@
-'use client';
+"use client";
+export const dynamic = 'force-static';
 
 import { useEffect, useRef } from 'react';
 import type { Metadata } from "next";

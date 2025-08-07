@@ -1,3 +1,5 @@
+"use client";
+export const dynamic = 'force-static';
 export default function PrivacyPolicyPage() {
   return (
     <main className="prose mx-auto p-8">
