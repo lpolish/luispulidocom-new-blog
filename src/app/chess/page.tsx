@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { useChessGame } from '@/hooks/useChessGame';
 import { useLocalScores } from '@/hooks/useLocalScores';
 import ChessBoard from '@/components/chess/ChessBoard';
@@ -46,7 +47,14 @@ export default function ChessPage() {
           Chess Game
         </h1>
         <p className="text-textMuted text-lg max-w-2xl mx-auto">
-          Play chess against an AI opponent powered by Stockfish.
+          Play chess against an AI opponent powered by{' '}
+          <Link 
+            href="/blog/stockfish-chess-engine-architecture" 
+            className="text-accent hover:text-accent2 transition-colors underline underline-offset-2"
+          >
+            Stockfish
+          </Link>
+          .
         </p>
       </div>
 
