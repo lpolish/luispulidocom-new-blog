@@ -23,6 +23,7 @@ export interface Post {
   tags: string[];
   content: string;
   isFeatured?: boolean;
+  references?: Map<string, { url: string; title?: string }>;
 }
 
 export async function getSortedPostsData(): Promise<Post[]> {
@@ -78,6 +79,10 @@ export async function getPostData(slug: string): Promise<Post> {
     const fullPath = path.join(postsDirectory, `${slug}.md`);
     const fileContents = await fs.readFile(fullPath, 'utf8');
     const matterResult = matter(fileContents);
+    
+    // Store extracted references
+    let extractedReferences: Map<string, { url: string; title?: string }> | undefined;
+    
     const remarkProcessor = remark()
       .use(math)
       .use(remarkGfm)
@@ -86,13 +91,18 @@ export async function getPostData(slug: string): Promise<Post> {
       .use(rehypeStoreCodeContent)
       .use(rehypeKatex)
       .use(rehypeHighlight)
-      .use(rehypeReferences)
+      .use(rehypeReferences, {
+        onReferencesExtracted: (references: Map<string, { url: string; title?: string }>) => {
+          extractedReferences = references;
+        }
+      })
       .use(rehypeStringify);
     const processedContent = await remarkProcessor.process(matterResult.content);
     const contentHtml = processedContent.toString();
     return {
       slug,
       content: contentHtml,
+      references: extractedReferences,
       ...(matterResult.data as {
         title: string;
         date: string;

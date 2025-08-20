@@ -1,15 +1,25 @@
 import { visit } from 'unist-util-visit';
 import type { Node } from 'unist';
 
+interface ReferenceData {
+  url: string;
+  title?: string;
+}
+
+interface RehypeReferencesOptions {
+  onReferencesExtracted?: (references: Map<string, ReferenceData>) => void;
+}
+
 /**
  * Custom rehype plugin to convert reference links like [1] into proper HTML links
  * that point to external URLs from the Inline References section, but leaves existing markdown links untouched.
  * Also ensures all external links open in a new tab with rel="noopener noreferrer".
+ * Extracts reference data for popover functionality.
  */
-export function rehypeReferences() {
+export function rehypeReferences(options: RehypeReferencesOptions = {}) {
   return (tree: Node) => {
-    // First pass: Collect reference URLs from the Inline References section
-    const referenceUrls = new Map<string, string>();
+    // First pass: Collect reference URLs and titles from the Inline References section
+    const referenceData = new Map<string, ReferenceData>();
     let inInlineReferences = false;
     
     visit(tree, 'element', (node: any) => {
@@ -31,13 +41,19 @@ export function rehypeReferences() {
         const numberMatch = node.children?.[0]?.children?.[0]?.value?.match(/^\d+/);
         if (numberMatch) {
           const number = numberMatch[0];
-          // Find the URL in the reference text
+          // Find the URL and title in the reference text
           const linkNode = node.children?.find((child: any) => 
             child.type === 'element' && 
             child.tagName === 'a'
           );
+          
           if (linkNode?.properties?.href) {
-            referenceUrls.set(number, linkNode.properties.href);
+            // Extract title from link text or use URL as fallback
+            const title = linkNode.children?.[0]?.value || linkNode.properties.href;
+            referenceData.set(number, {
+              url: linkNode.properties.href,
+              title: title
+            });
           }
         }
       }
@@ -60,8 +76,9 @@ export function rehypeReferences() {
           });
         }
         const referenceNumber = match[1];
-        const url = referenceUrls.get(referenceNumber);
-        // Create the reference link
+        const refData = referenceData.get(referenceNumber);
+        const url = refData?.url;
+        // Create the reference link with data attributes for popover functionality
         parts.push({
           type: 'element',
           tagName: 'a',
@@ -70,7 +87,11 @@ export function rehypeReferences() {
             className: ['reference-link'],
             title: `Reference ${referenceNumber}`,
             target: url ? '_blank' : undefined,
-            rel: url ? 'noopener noreferrer' : undefined
+            rel: url ? 'noopener noreferrer' : undefined,
+            'data-reference-id': referenceNumber,
+            'data-reference-url': url || '',
+            'data-reference-title': refData?.title || '',
+            'data-reference-number': referenceNumber
           },
           children: [{
             type: 'text',
@@ -102,6 +123,11 @@ export function rehypeReferences() {
         }
       }
     });
+
+    // Call the callback with extracted references
+    if (options.onReferencesExtracted) {
+      options.onReferencesExtracted(referenceData);
+    }
 
     return tree;
   };

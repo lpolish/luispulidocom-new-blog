@@ -10,14 +10,12 @@ const Footer = () => {
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Chess', href: '/chess' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' }
   ];
 
-  const randomLinks = [
-    { name: 'Kaleidoscope', href: '/random/kaleidoscope' },
-    { name: 'Smudge Canvas', href: '/random/smudge-canvas' }
-  ];
+  // ...existing code...
 
   const [recentPosts, setRecentPosts] = useState<{ slug: string; title: string }[]>([]);
   const [recentPostsError, setRecentPostsError] = useState(false);
@@ -41,21 +39,21 @@ const Footer = () => {
     <footer className="bg-background/95 backdrop-blur-sm border-t border-border py-10 mt-auto">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
-            {/* ...existing code for Navigation and Random columns... */}
+          <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+            {/* Navigation column (30%) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className=""
+              className="w-full md:w-1/3 flex flex-col items-center"
             >
-              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Navigation</h3>
-              <ul className="space-y-2">
+              <h3 className="text-text font-bold mb-6 text-lg uppercase tracking-wide text-center w-full">Navigation</h3>
+              <ul className="space-y-3 w-full">
                 {navLinks.map((link) => (
-                  <li key={link.name}>
+                  <li key={link.name} className="w-full">
                     <Link
                       href={link.href}
-                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
+                      className="block w-full text-textMuted hover:text-accent text-base font-semibold transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-background/80 text-center"
                     >
                       {link.name}
                     </Link>
@@ -64,92 +62,38 @@ const Footer = () => {
               </ul>
             </motion.div>
 
+            {/* Recent Posts block (70%) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className=""
+              className="w-full md:w-2/3"
             >
-              <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Random</h3>
-              <ul className="space-y-2">
-                {randomLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="text-text font-semibold mb-6 text-lg uppercase tracking-wide text-center w-full">Recent Posts</h3>
+              {recentPostsError || recentPosts.length === 0 ? (
+                <div className="flex items-center justify-center text-textMuted text-sm h-full">
+                  <span>No recent posts available.</span>
+                </div>
+              ) : (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {recentPosts.map((post: { slug: string; title: string }) => (
+                    <li key={post.slug} className="flex flex-col gap-2 bg-background/80 rounded-xl shadow-lg p-5 hover:bg-background/95 transition-colors border border-border">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="text-text font-semibold hover:text-accent text-base transition-colors duration-200 mb-1"
+                      >
+                        {post.title}
+                      </Link>
+                      <span className="select-none" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="4" y="7" width="8" height="2" rx="1" fill="currentColor" className="text-accent" />
+                        </svg>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </motion.div>
-
-            {recentPostsError || recentPosts.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="col-span-2 flex items-center justify-center text-textMuted text-sm"
-              >
-                <span>No recent posts available.</span>
-              </motion.div>
-            ) : (
-              <>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  className=""
-                >
-                  <h3 className="text-text font-semibold mb-4 text-base uppercase tracking-wide">Recent Posts</h3>
-                  <ul className="space-y-2">
-                    {recentPosts.slice(0, Math.ceil(recentPosts.length / 2)).map((post: { slug: string; title: string }) => (
-                      <li key={post.slug} className="flex items-center gap-2">
-                        <span className="select-none" aria-hidden="true">
-                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="3" width="4" height="2" rx="1" fill="currentColor" className="text-accent" />
-                          </svg>
-                        </span>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
-                        >
-                          {post.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className=""
-                >
-                  {/* No title for second column, push items one row below by adding an empty li */}
-                  <ul className="space-y-2">
-                    <li key="recent-posts-spacer" aria-hidden="true">&nbsp;</li>
-                    {recentPosts.slice(Math.ceil(recentPosts.length / 2)).map((post: { slug: string; title: string }) => (
-                      <li key={post.slug} className="flex items-center gap-2">
-                        <span className="select-none" aria-hidden="true">
-                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="3" width="4" height="2" rx="1" fill="currentColor" className="text-accent" />
-                          </svg>
-                        </span>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-textMuted hover:text-accent text-base font-medium transition-colors duration-200"
-                        >
-                          {post.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              </>
-            )}
           </div>
 
           <motion.div
