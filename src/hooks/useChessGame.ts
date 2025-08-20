@@ -199,7 +199,7 @@ export function useChessGame() {
       gameStatus: playerStartsWhite ? "Your turn (White)" : "AI thinking (White)",
       lastMove: null,
     });
-    // If user gets black, trigger Stockfish move
+    // Only trigger Stockfish move if user is black
     if (!playerStartsWhite) {
       setTimeout(async () => {
         const aiMoveUci = await fetchAiMove(gameRef.current.fen());
