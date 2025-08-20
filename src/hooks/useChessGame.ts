@@ -21,6 +21,8 @@ interface StockfishResponse {
 
 export function useChessGame() {
   const gameRef = useRef(new Chess());
+  // Track who starts: true for white, false for black
+  const [playerIsWhite, setPlayerIsWhite] = useState(true);
   const [gameState, setGameState] = useState<ChessGameState>({
     fen: gameRef.current.fen(),
     isGameOver: false,
@@ -183,23 +185,40 @@ export function useChessGame() {
   }, [fetchAiMove, updateGameState]);
 
   const resetGame = useCallback(() => {
+    // Alternate who starts
+    setPlayerIsWhite(prev => !prev);
+    const playerStartsWhite = !playerIsWhite;
     gameRef.current = new Chess();
     setApiError(null);
     setGameState({
       fen: gameRef.current.fen(),
       isGameOver: false,
       winner: null,
-      isPlayerTurn: true,
+      isPlayerTurn: playerStartsWhite,
       isThinking: false,
-      gameStatus: "Your turn (White)",
+      gameStatus: playerStartsWhite ? "Your turn (White)" : "AI thinking (White)",
       lastMove: null,
     });
+    // If user gets black, trigger Stockfish move
+    if (!playerStartsWhite) {
+      setTimeout(async () => {
+        const aiMoveUci = await fetchAiMove(gameRef.current.fen());
+        if (aiMoveUci && aiMoveUci.length >= 4) {
+          const aiFrom = aiMoveUci.substring(0, 2);
+          const aiTo = aiMoveUci.substring(2, 4);
+          const aiPromotion = aiMoveUci.length > 4 ? aiMoveUci[4] : undefined;
+          gameRef.current.move({ from: aiFrom, to: aiTo, promotion: aiPromotion || 'q' });
+          updateGameState();
+        }
+      }, 500);
+    }
   }, []);
 
   return {
-    gameState,
-    makePlayerMove,
-    resetGame,
-    apiError,
+  gameState,
+  makePlayerMove,
+  resetGame,
+  apiError,
+  playerIsWhite,
   };
 }

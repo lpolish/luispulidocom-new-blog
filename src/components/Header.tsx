@@ -14,8 +14,7 @@ const navItems: NavItem[] = [
   { name: 'Blog', href: '/blog' },
   { name: 'Chess', href: '/chess' },
   { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'Random', href: '/random' }
+  { name: 'Contact', href: '/contact' }
 ];
 
 const Header = () => {

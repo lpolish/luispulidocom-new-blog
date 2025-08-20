@@ -1,14 +1,95 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import type { Post } from '@/lib/posts';
+import { useReferences } from '@/contexts/ReferenceContext';
+import { ReferencePopover } from './ReferencePopover';
 
 interface BlogPostProps {
   post: Post;
 }
 
 export function BlogPost({ post }: BlogPostProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { 
+    setReferences, 
+    activeReference, 
+    activeElement, 
+    isReferenceVisible, 
+    showReference, 
+    hideReference 
+  } = useReferences();
+
+  // Set up references when component mounts
+  useEffect(() => {
+    if (post.references) {
+      // Convert to the format expected by the context
+      const referenceMap = new Map();
+      post.references.forEach((data, number) => {
+        referenceMap.set(number, {
+          id: number,
+          number,
+          title: data.title || `Reference ${number}`,
+          url: data.url
+        });
+      });
+      setReferences(referenceMap);
+    }
+  }, [post.references, setReferences]);
+
+  // Set up event listeners for reference links
+  useEffect(() => {
+    const handleReferenceInteraction = (event: Event) => {
+      const target = event.target as HTMLElement;
+      
+      // Check if the target or any parent element is a reference link
+      const referenceLink = target.closest('.reference-link') as HTMLElement;
+      
+      if (referenceLink) {
+        const referenceId = referenceLink.getAttribute('data-reference-id');
+        if (referenceId) {
+          if (event.type === 'click') {
+            event.preventDefault();
+            showReference(referenceId, referenceLink);
+          } else if (event.type === 'mouseenter') {
+            showReference(referenceId, referenceLink);
+          }
+        }
+      }
+    };
+
+    const handleMouseLeave = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const referenceLink = target.closest('.reference-link');
+      
+      if (referenceLink) {
+        // Add a small delay to allow moving to popover
+        setTimeout(() => {
+          const popover = document.querySelector('[role="dialog"]');
+          if (!popover || !popover.matches(':hover')) {
+            hideReference();
+          }
+        }, 150);
+      }
+    };
+
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      // Use delegation for better performance and reliability
+      contentElement.addEventListener('click', handleReferenceInteraction);
+      contentElement.addEventListener('mouseenter', handleReferenceInteraction, { capture: true });
+      contentElement.addEventListener('mouseleave', handleMouseLeave, { capture: true });
+
+      return () => {
+        contentElement.removeEventListener('click', handleReferenceInteraction);
+        contentElement.removeEventListener('mouseenter', handleReferenceInteraction, { capture: true });
+        contentElement.removeEventListener('mouseleave', handleMouseLeave, { capture: true });
+      };
+    }
+  }, [showReference, hideReference]);
+
   return (
     <div className="max-w-3xl mx-auto">
       <motion.article
@@ -53,6 +134,7 @@ export function BlogPost({ post }: BlogPostProps) {
         </header>
         
         <motion.div 
+          ref={contentRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -83,6 +165,16 @@ export function BlogPost({ post }: BlogPostProps) {
           Back to all posts
         </Link>
       </motion.div>
+
+      {/* Reference Popover */}
+      {activeReference && (
+        <ReferencePopover
+          reference={activeReference}
+          isOpen={isReferenceVisible}
+          onClose={hideReference}
+          triggerElement={activeElement}
+        />
+      )}
     </div>
   );
 } 

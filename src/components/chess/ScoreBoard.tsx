@@ -47,12 +47,15 @@ export default function ScoreBoard({ scores, onResetScores, isLoaded }: ScoreBoa
           </div>
         </div>
       </div>
-      <button
-        onClick={onResetScores}
-        className="w-full mt-4 px-3 py-2 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
-      >
-        Reset Scores
-      </button>
+      <div className="w-full mt-4 flex justify-end">
+        <button
+          onClick={onResetScores}
+          className="text-xs text-red-400 hover:text-red-600 underline bg-transparent border-none p-0 m-0 cursor-pointer transition-colors"
+          style={{ fontWeight: 500 }}
+        >
+          Reset Scores
+        </button>
+      </div>
     </div>
   );
 }

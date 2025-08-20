@@ -10,7 +10,7 @@ import ScoreBoard from '@/components/chess/ScoreBoard';
 import { metadata } from './metadata';
 
 export default function ChessPage() {
-  const { gameState, makePlayerMove, resetGame, apiError } = useChessGame();
+  const { gameState, makePlayerMove, resetGame, apiError, playerIsWhite } = useChessGame();
   const { scores, updateScores, resetScores, isLoaded } = useLocalScores();
   const gameEndProcessedRef = useRef<string | null>(null);
 
@@ -39,6 +39,8 @@ export default function ChessPage() {
     }
   }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores]);
 
+  // Board orientation is fixed for the game, based on who started
+  const boardOrientation = playerIsWhite ? 'white' : 'black';
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Header */}
@@ -48,12 +50,14 @@ export default function ChessPage() {
         </h1>
         <p className="text-textMuted text-lg max-w-2xl mx-auto">
           Play chess against an AI opponent powered by{' '}
-          <Link 
-            href="/blog/stockfish-chess-engine-architecture" 
-            className="text-accent hover:text-accent2 transition-colors underline underline-offset-2"
-          >
-            Stockfish
-          </Link>
+            <Link 
+              href="/blog/stockfish-chess-engine-architecture" 
+              className="text-accent hover:text-accent2 transition-colors underline underline-offset-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Stockfish
+            </Link>
           .
         </p>
       </div>
@@ -64,6 +68,7 @@ export default function ChessPage() {
           <ChessBoard
             gameState={gameState}
             onMove={makePlayerMove}
+            boardOrientation={boardOrientation}
           />
         </div>
 

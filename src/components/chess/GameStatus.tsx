@@ -9,6 +9,20 @@ interface GameStatusProps {
 }
 
 export default function GameStatus({ gameState, onResetGame, apiError }: GameStatusProps) {
+  const handleResign = () => {
+    if (window.confirm('Are you sure you want to resign? You will lose this game.')) {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        // Deduct a loss in local storage
+        try {
+          const scoresRaw = localStorage.getItem('chessScores');
+          let scores = scoresRaw ? JSON.parse(scoresRaw) : { wins: 0, losses: 0, draws: 0 };
+          scores.losses = (scores.losses || 0) + 1;
+          localStorage.setItem('chessScores', JSON.stringify(scores));
+        } catch {}
+      }
+      onResetGame();
+    }
+  };
   const getStatusColor = () => {
     if (gameState.isGameOver) {
       if (gameState.winner === 'white') return 'text-accent2';
@@ -53,15 +67,29 @@ export default function GameStatus({ gameState, onResetGame, apiError }: GameSta
             {getStatusIcon()}
           </p>
         </div>
-        
-        <button
-          onClick={onResetGame}
-          className="px-4 py-2 bg-accent hover:bg-accent/80 text-background rounded font-medium transition-colors text-sm"
-        >
-          New Game
-        </button>
+        {!gameState.isGameOver && gameState.lastMove === null ? (
+          <button
+            onClick={onResetGame}
+            className="px-4 py-2 bg-accent hover:bg-accent/80 text-background rounded font-medium transition-colors text-sm"
+          >
+            New Game
+          </button>
+        ) : gameState.isGameOver ? (
+          <button
+            onClick={onResetGame}
+            className="px-4 py-2 bg-accent hover:bg-accent/80 text-background rounded font-medium transition-colors text-sm"
+          >
+            New Game
+          </button>
+        ) : (
+          <button
+            onClick={handleResign}
+            className="px-4 py-2 bg-accent hover:bg-accent/80 text-background rounded font-medium transition-colors text-sm"
+          >
+            Resign
+          </button>
+        )}
       </div>
-      
       {gameState.isGameOver && (
         <div className="mt-3 p-3 bg-background border border-border rounded text-center">
           <p className="text-sm text-textMuted">

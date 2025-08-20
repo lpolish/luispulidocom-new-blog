@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { ReferenceProvider } from '@/contexts/ReferenceContext';
 
 export default function BlogLayout({
   children,
@@ -6,10 +6,12 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen">
-      <main className="py-8">
-        {children}
-      </main>
-    </div>
+    <ReferenceProvider>
+      <div className="min-h-screen">
+        <main className="py-8">
+          {children}
+        </main>
+      </div>
+    </ReferenceProvider>
   );
 } 

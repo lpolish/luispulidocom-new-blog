@@ -172,3 +172,53 @@ pre {
 .card-item:hover {
   transform: translateY(-2px);
 }
+
+/* Reference link styles */
+.reference-link {
+  @apply text-accent hover:text-accent/80 transition-colors duration-200 cursor-pointer;
+  @apply relative inline-flex items-center;
+  @apply text-sm font-medium;
+  @apply bg-accent/10 hover:bg-accent/20;
+  @apply px-1.5 py-0.5 rounded;
+  @apply border border-accent/20 hover:border-accent/40;
+  @apply no-underline;
+  text-decoration: none !important;
+}
+
+.reference-link:hover {
+  @apply shadow-sm;
+}
+
+/* Animation for reference links */
+.reference-link {
+  transition: all 0.2s ease-in-out;
+}
+
+.reference-link:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 121, 198, 0.1) 0%, rgba(80, 250, 123, 0.1) 100%);
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.reference-link:hover:before {
+  opacity: 1;
+}
+
+/* Override prose styles for reference links */
+.prose .reference-link {
+  color: rgb(var(--accent)) !important;
+  text-decoration: none !important;
+}
+
+.prose .reference-link:hover {
+  color: rgb(var(--accent) / 0.8) !important;
+  text-decoration: none !important;
+}

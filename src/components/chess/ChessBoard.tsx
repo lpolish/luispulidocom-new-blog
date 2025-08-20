@@ -7,24 +7,28 @@ interface ChessBoardProps {
   gameState: ChessGameState;
   onMove: (from: string, to: string) => Promise<boolean>;
   boardSize?: number;
+  boardOrientation?: 'white' | 'black';
 }
 
-export default function ChessBoard({ gameState, onMove, boardSize }: ChessBoardProps) {
+export default function ChessBoard({ gameState, onMove, boardSize, boardOrientation }: ChessBoardProps) {
   const handlePieceDrop = ({ piece, sourceSquare, targetSquare }: { 
     piece: { isSparePiece: boolean; position: string; pieceType: string }; 
     sourceSquare: string; 
     targetSquare: string | null; 
   }): boolean => {
-    // Don't allow moves if it's not the player's turn or game is over
-    if (!gameState.isPlayerTurn || gameState.isGameOver || gameState.isThinking || !targetSquare) {
+    // Don't allow moves if game is over, it's AI's turn, or board is thinking
+    if (gameState.isGameOver || gameState.isThinking || !targetSquare) {
       return false;
     }
-
+    // Only allow moves for correct color
+    if ((boardOrientation === 'white' && !gameState.isPlayerTurn) ||
+        (boardOrientation === 'black' && gameState.isPlayerTurn)) {
+      return false;
+    }
     // Execute the move asynchronously but return true for UI responsiveness
     onMove(sourceSquare, targetSquare).then(result => {
       // The result will be handled by the chess game hook
     });
-    
     return true;
   };
 
@@ -48,9 +52,13 @@ export default function ChessBoard({ gameState, onMove, boardSize }: ChessBoardP
     id: "BasicBoard",
     position: gameState.fen,
     onPieceDrop: handlePieceDrop,
-    boardOrientation: "white" as const,
+    boardOrientation: boardOrientation || "white",
     squareStyles: getCustomSquareStyles(),
-    allowDragging: gameState.isPlayerTurn && !gameState.isGameOver && !gameState.isThinking,
+    allowDragging:
+      ((boardOrientation === 'white' && gameState.isPlayerTurn) ||
+       (boardOrientation === 'black' && !gameState.isPlayerTurn)) &&
+      !gameState.isGameOver && !gameState.isThinking,
+    orientation: boardOrientation || "white",
     boardStyle: {
       borderRadius: '4px',
     },
