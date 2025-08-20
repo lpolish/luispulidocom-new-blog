@@ -1,137 +1,152 @@
+
 # Luis Pulido Blog
 
-A technical blog exploring software architecture, security, AI, and modern web development. Dive into practical guides, deep technical insights, and real-world solutions for engineers and curious minds.
+> A modern technical blog for engineers, architects, and curious minds. Explore deep dives into software architecture, security, AI, and web development, with practical guides and real-world solutions.
 
-## Screenshots
+---
+
+## 🚀 Features
+
+- **Next.js 14 App Router**: Fast, scalable, and SEO-friendly
+- **TypeScript**: Type-safe codebase
+- **Tailwind CSS**: Custom ultradark theme, dark mode only
+- **Markdown Content**: Easy authoring with frontmatter
+- **Dynamic Blog & Pages**: Blog, About, Contact, Privacy, Terms, and more
+- **Recent Posts & RSS**: Automated feeds and recent posts
+- **Chess Section**: Interactive chessboard and game status
+- **Accessibility**: Minimal, distraction-free, keyboard-friendly
+
+## 🖼️ Screenshots
 
 Desktop:
-
 ![Desktop Screenshot](public/screenshot-desktop.png)
 
 Mobile:
-
 ![Mobile Screenshot](public/screenshot-mobile.png)
 
-## Overview
+Chess against AI:
+![Chess Screenshot](public/chess-screenshot.png)
 
-This is a personal blog built with Next.js and TypeScript, designed to be:
-- Minimalistic and distraction-free
-- Easy to maintain
-- Fast-loading and SEO-friendly
-- Dark-mode only with an ultradark color palette
+*(Replace these screenshots with your own!)*
 
-## Tech Stack
+---
 
-- **Framework**: Next.js 14 with App Router
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Content**: Markdown with gray-matter and remark
-- **Type Safety**: TypeScript
-- **Deployment**: Static export (hostable on Netlify, Vercel, GitHub Pages, etc.)
+- **Content**: Markdown, gray-matter, remark
+- **Deployment**: Static export (Netlify, Vercel, GitHub Pages)
 
-## Getting Started
+---
+
+## ⚡ Getting Started
 
 ### Prerequisites
 
-- Node.js 18.17.0 or later
+- Node.js >= 18.17.0
+- pnpm (recommended) or npm
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/lpolish/luispulidocom-new-blog.git
-   cd luispulido.com
-   ```
+```bash
+git clone https://github.com/lpolish/luispulidocom-new-blog.git
+cd blog
+pnpm install # or npm install
+pnpm dev     # or npm run dev
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Visit [http://localhost:3000](http://localhost:3000)
 
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+---
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## ✍️ Adding Content
 
-## Adding Content
+### Create a Blog Post
 
-### Creating Blog Posts
-
-1. Create a new Markdown file in `src/content/posts/` with a filename that will become the URL slug.
-2. Add the following frontmatter at the top of the file:
-
+1. Add a Markdown file to `src/content/posts/` (filename = URL slug)
+2. Use this frontmatter:
    ```markdown
    ---
    title: "Your Post Title"
    date: "YYYY-MM-DD"
-   excerpt: "A brief description of your post"
+   excerpt: "Brief summary of your post"
    tags: ["tag1", "tag2"]
-   isFeatured: true  # Optional, set to true to feature on homepage
+   isFeatured: true # Optional
    ---
-
    # Your Post Title
-
-   Your content goes here...
+   Content goes here...
    ```
+3. Write your post below the frontmatter.
 
-3. Write your post content using Markdown syntax below the frontmatter.
+### Custom Pages
 
-### Customizing Pages
+- Homepage: `src/app/page.tsx`
+- About: `src/app/about/page.tsx`
+- Contact: `src/app/contact/page.tsx`
+- Chess: `src/app/chess/page.tsx`
+- Privacy/Terms: `src/app/privacy/page.tsx`, `src/app/terms-of-service/page.tsx`
 
-- **Homepage**: Edit `src/app/page.tsx`
-- **About**: Edit `src/app/about/page.tsx`
-- **Contact**: Edit `src/app/contact/page.tsx`
+---
 
-## Building and Deployment
+## 🏗️ Build & Deploy
 
-### Build for Production
+### Build
 
 ```bash
-npm run build
+pnpm build # or npm run build
 ```
 
-This will generate static HTML files in the `out` directory.
+Static files are output to the `out` directory.
 
-### Deploying to Netlify/Vercel/GitHub Pages
+### Deploy
 
-- **Netlify**: Connect your repository and use the build command `npm run build` with publish directory `out`.
-- **Vercel**: Connect your repository and Vercel will automatically detect Next.js settings.
-- **GitHub Pages**: Push the `out` directory to the `gh-pages` branch.
+- **Netlify**: Build command `pnpm build`, publish directory `out`
+- **Vercel**: Auto-detects Next.js
+- **GitHub Pages**: Push `out` to `gh-pages` branch
 
-## Site Structure
+---
+
+## 📁 Project Structure
 
 ```
 ├── src/
-│   ├── app/                # Pages and routes
-│   │   ├── blog/           # Blog listing and post pages
+│   ├── app/                # Pages & routes
+│   │   ├── blog/           # Blog listing & posts
+│   │   ├── chess/          # Chess section
 │   │   ├── about/          # About page
 │   │   ├── contact/        # Contact page
+│   │   ├── privacy/        # Privacy policy
+│   │   ├── terms-of-service/ # Terms of service
 │   │   ├── layout.tsx      # Root layout
 │   │   └── page.tsx        # Homepage
-│   ├── components/         # Reusable components
-│   ├── content/            # Content files
-│   │   └── posts/          # Blog posts in Markdown
-│   └── lib/                # Utility functions
-│       └── posts.ts        # Blog post handling
+│   ├── components/         # UI & feature components
+│   ├── content/            # Markdown posts
+│   ├── lib/                # Utilities
+│   └── hooks/              # Custom hooks
 ├── public/                 # Static assets
-└── tailwind.config.js      # Tailwind configuration
+└── tailwind.config.js      # Tailwind config
 ```
 
-## Maintenance Tips
+---
 
-- **Adding Images**: Place images in the `public/images` directory and reference them as `/images/filename.jpg`.
-- **Updating Styling**: Modify the theme in `tailwind.config.js` or adjust component styles in their respective files.
-- **SEO**: Update metadata in each page's component to improve search engine visibility.
+## 🧩 Maintenance & Customization
 
-## Image Hosting Alternatives
+- **Add Images**: Place in `public/images/`, reference as `/images/filename.png`
+- **Styling**: Edit `tailwind.config.js` or component styles
+- **SEO**: Update metadata in page components
+- **Recent Posts/RSS**: Scripts in `scripts/` auto-generate feeds
 
-- **Local Images**: Store images in the `public/images` directory (simplest approach)
-- **Free Alternatives to Cloudinary**:
-  - Imgix has a free tier
-  - Imgur for simple image hosting
-  - GitHub repository itself for version-controlled images
+---
 
-## License
+## 🌐 Image Hosting Tips
 
-This project is MIT licensed.
+- **Local**: Use `public/images/` for fastest loading
+- **Alternatives**: Imgix (free tier), Imgur, GitHub repo
+
+---
+
+## 📜 License
+
+MIT
