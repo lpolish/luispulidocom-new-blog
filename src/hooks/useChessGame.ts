@@ -44,7 +44,9 @@ export function useChessGame() {
     if (isGameOver) {
       if (game.isCheckmate()) {
         winner = game.turn() === 'w' ? 'black' : 'white';
-        gameStatus = winner === 'white' ? 'You win! Checkmate!' : 'You lose! Checkmate!';
+        // Check if the player won based on their color
+        const playerWon = (winner === 'white' && playerIsWhite) || (winner === 'black' && !playerIsWhite);
+        gameStatus = playerWon ? 'You win! Checkmate!' : 'You lose! Checkmate!';
       } else if (game.isDraw()) {
         winner = 'draw';
         gameStatus = 'Draw!';
@@ -59,11 +61,14 @@ export function useChessGame() {
         gameStatus = 'Draw by insufficient material!';
       }
     } else {
-      const isPlayerTurn = game.turn() === 'w';
+      const isPlayerTurn = (game.turn() === 'w' && playerIsWhite) || (game.turn() === 'b' && !playerIsWhite);
+      const currentPlayerColor = playerIsWhite ? 'White' : 'Black';
+      const currentAiColor = playerIsWhite ? 'Black' : 'White';
+      
       if (game.isCheck()) {
-        gameStatus = isPlayerTurn ? 'Your turn (White) - Check!' : 'AI thinking (Black) - Check!';
+        gameStatus = isPlayerTurn ? `Your turn (${currentPlayerColor}) - Check!` : `AI thinking (${currentAiColor}) - Check!`;
       } else {
-        gameStatus = isPlayerTurn ? 'Your turn (White)' : 'AI thinking (Black)';
+        gameStatus = isPlayerTurn ? `Your turn (${currentPlayerColor})` : `AI thinking (${currentAiColor})`;
       }
     }
 
@@ -72,10 +77,10 @@ export function useChessGame() {
       fen: game.fen(),
       isGameOver,
       winner,
-      isPlayerTurn: game.turn() === 'w',
+      isPlayerTurn: (game.turn() === 'w' && playerIsWhite) || (game.turn() === 'b' && !playerIsWhite),
       gameStatus,
     }));
-  }, []);
+  }, [playerIsWhite]);
 
   const fetchAiMove = useCallback(async (currentFen: string): Promise<string | null> => {
     try {
@@ -190,13 +195,17 @@ export function useChessGame() {
     const playerStartsWhite = !playerIsWhite;
     gameRef.current = new Chess();
     setApiError(null);
+    
+    const playerColor = playerStartsWhite ? 'White' : 'Black';
+    const aiColor = playerStartsWhite ? 'Black' : 'White';
+    
     setGameState({
       fen: gameRef.current.fen(),
       isGameOver: false,
       winner: null,
       isPlayerTurn: playerStartsWhite,
       isThinking: false,
-      gameStatus: playerStartsWhite ? "Your turn (White)" : "AI thinking (White)",
+      gameStatus: playerStartsWhite ? `Your turn (${playerColor})` : `AI thinking (${aiColor})`,
       lastMove: null,
     });
     // Only trigger Stockfish move if user is black
@@ -212,7 +221,7 @@ export function useChessGame() {
         }
       }, 500);
     }
-  }, []);
+  }, [playerIsWhite, fetchAiMove, updateGameState]);
 
   return {
   gameState,

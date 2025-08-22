@@ -23,12 +23,15 @@ export default function ChessPage() {
       if (gameEndProcessedRef.current !== gameId) {
         gameEndProcessedRef.current = gameId;
         
-        if (gameState.winner === 'white') {
-          updateScores('win');
-        } else if (gameState.winner === 'black') {
-          updateScores('loss');
-        } else {
+        if (gameState.winner === 'draw') {
           updateScores('draw');
+        } else if (
+          (gameState.winner === 'white' && playerIsWhite) ||
+          (gameState.winner === 'black' && !playerIsWhite)
+        ) {
+          updateScores('win');     // Player's color wins = player wins
+        } else {
+          updateScores('loss');    // Opponent's color wins = player loses
         }
       }
     }
@@ -37,7 +40,7 @@ export default function ChessPage() {
     if (!gameState.isGameOver) {
       gameEndProcessedRef.current = null;
     }
-  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores]);
+  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores, playerIsWhite]);
 
   // Board orientation is fixed for the game, based on who started
   const boardOrientation = playerIsWhite ? 'white' : 'black';
@@ -78,6 +81,7 @@ export default function ChessPage() {
             gameState={gameState}
             onResetGame={resetGame}
             apiError={apiError}
+            playerIsWhite={playerIsWhite}
           />
           
           <ScoreBoard

@@ -6,9 +6,10 @@ interface GameStatusProps {
   gameState: ChessGameState;
   onResetGame: () => void;
   apiError: string | null;
+  playerIsWhite: boolean;
 }
 
-export default function GameStatus({ gameState, onResetGame, apiError }: GameStatusProps) {
+export default function GameStatus({ gameState, onResetGame, apiError, playerIsWhite }: GameStatusProps) {
   const handleResign = () => {
     if (window.confirm('Are you sure you want to resign? You will lose this game.')) {
       if (typeof window !== 'undefined' && window.localStorage) {
@@ -25,9 +26,12 @@ export default function GameStatus({ gameState, onResetGame, apiError }: GameSta
   };
   const getStatusColor = () => {
     if (gameState.isGameOver) {
-      if (gameState.winner === 'white') return 'text-accent2';
-      if (gameState.winner === 'black') return 'text-red-400';
-      return 'text-accent';
+      if (gameState.winner === 'draw') return 'text-accent';
+      
+      // Check if the player won based on their color
+      const playerWon = (gameState.winner === 'white' && playerIsWhite) || 
+                       (gameState.winner === 'black' && !playerIsWhite);
+      return playerWon ? 'text-accent2' : 'text-red-400';
     }
     return gameState.isThinking ? 'text-accent' : 'text-text';
   };
@@ -42,9 +46,12 @@ export default function GameStatus({ gameState, onResetGame, apiError }: GameSta
     }
     
     if (gameState.isGameOver) {
-      if (gameState.winner === 'white') return ' 🎉';
-      if (gameState.winner === 'black') return ' 😔';
-      return ' 🤝';
+      if (gameState.winner === 'draw') return ' 🤝';
+      
+      // Check if the player won based on their color
+      const playerWon = (gameState.winner === 'white' && playerIsWhite) || 
+                       (gameState.winner === 'black' && !playerIsWhite);
+      return playerWon ? ' 🎉' : ' 😔';
     }
     
     return gameState.isPlayerTurn ? ' ♔' : ' ♛';
