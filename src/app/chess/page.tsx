@@ -23,12 +23,17 @@ export default function ChessPage() {
       if (gameEndProcessedRef.current !== gameId) {
         gameEndProcessedRef.current = gameId;
         
-        if (gameState.winner === 'white') {
-          updateScores('win');
-        } else if (gameState.winner === 'black') {
-          updateScores('loss');
-        } else {
+        // Determine if the player won based on their color and the winner
+        if (gameState.winner === 'draw') {
           updateScores('draw');
+        } else {
+          const playerWon = (playerIsWhite && gameState.winner === 'white') || 
+                           (!playerIsWhite && gameState.winner === 'black');
+          if (playerWon) {
+            updateScores('win');
+          } else {
+            updateScores('loss');
+          }
         }
       }
     }
