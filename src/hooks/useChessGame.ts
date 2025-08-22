@@ -41,16 +41,11 @@ export function useChessGame() {
     let winner: 'white' | 'black' | 'draw' | null = null;
     let gameStatus = '';
 
-    // Side to move in FEN
-    const whiteToMove = game.turn() === 'w';
-    // Determine if it's the human player's turn (player color stored in state)
-    const playerTurn = playerIsWhite ? whiteToMove : !whiteToMove;
-
     if (isGameOver) {
       if (game.isCheckmate()) {
-        // If checkmate, the side whose turn it IS (in game.turn()) is the LOSER because they have no legal moves.
         winner = game.turn() === 'w' ? 'black' : 'white';
-        const playerWon = (winner === 'white' && playerIsWhite) || (winner === 'black' && !playerIsWhite);
+        // Check if the player won or lost based on their color
+        const playerWon = (playerIsWhite && winner === 'white') || (!playerIsWhite && winner === 'black');
         gameStatus = playerWon ? 'You win! Checkmate!' : 'You lose! Checkmate!';
       } else if (game.isDraw()) {
         winner = 'draw';
@@ -66,14 +61,13 @@ export function useChessGame() {
         gameStatus = 'Draw by insufficient material!';
       }
     } else {
+      const isPlayerTurn = playerIsWhite ? (game.turn() === 'w') : (game.turn() === 'b');
+      const playerColor = playerIsWhite ? 'White' : 'Black';
+      const aiColor = playerIsWhite ? 'Black' : 'White';
       if (game.isCheck()) {
-        gameStatus = playerTurn
-          ? `Your turn (${playerIsWhite ? 'White' : 'Black'}) - Check!`
-          : `AI thinking (${playerIsWhite ? 'Black' : 'White'}) - Check!`;
+        gameStatus = isPlayerTurn ? `Your turn (${playerColor}) - Check!` : `AI thinking (${aiColor}) - Check!`;
       } else {
-        gameStatus = playerTurn
-          ? `Your turn (${playerIsWhite ? 'White' : 'Black'})`
-          : `AI thinking (${playerIsWhite ? 'Black' : 'White'})`;
+        gameStatus = isPlayerTurn ? `Your turn (${playerColor})` : `AI thinking (${aiColor})`;
       }
     }
 
@@ -82,8 +76,7 @@ export function useChessGame() {
       fen: game.fen(),
       isGameOver,
       winner,
-      // isPlayerTurn now reflects whether it's the HUMAN player's turn (perspective-aware)
-      isPlayerTurn: playerTurn,
+      isPlayerTurn: playerIsWhite ? (game.turn() === 'w') : (game.turn() === 'b'),
       gameStatus,
     }));
   }, [playerIsWhite]);
@@ -205,10 +198,9 @@ export function useChessGame() {
       fen: gameRef.current.fen(),
       isGameOver: false,
       winner: null,
-      // When player starts white, it's player's turn; otherwise AI (white) moves first
       isPlayerTurn: playerStartsWhite,
-      isThinking: !playerStartsWhite, // we're going to fetch AI move if player is black
-      gameStatus: playerStartsWhite ? 'Your turn (White)' : 'AI thinking (White)',
+      isThinking: false,
+      gameStatus: playerStartsWhite ? "Your turn (White)" : "AI thinking (White)",
       lastMove: null,
     });
     // Only trigger Stockfish move if user is black
@@ -220,12 +212,9 @@ export function useChessGame() {
           const aiTo = aiMoveUci.substring(2, 4);
           const aiPromotion = aiMoveUci.length > 4 ? aiMoveUci[4] : undefined;
           gameRef.current.move({ from: aiFrom, to: aiTo, promotion: aiPromotion || 'q' });
+          updateGameState();
         }
-        updateGameState();
       }, 500);
-    } else {
-      // Ensure state reflects correct perspective after reset
-      updateGameState();
     }
   }, []);
 

@@ -21,8 +21,10 @@ export default function ChessBoard({ gameState, onMove, boardSize, boardOrientat
       return false;
     }
     // Only allow moves for correct color
-  // isPlayerTurn already encodes if human can move (perspective aware)
-  if (!gameState.isPlayerTurn) return false;
+    if ((boardOrientation === 'white' && !gameState.isPlayerTurn) ||
+        (boardOrientation === 'black' && gameState.isPlayerTurn)) {
+      return false;
+    }
     // Execute the move asynchronously but return true for UI responsiveness
     onMove(sourceSquare, targetSquare).then(result => {
       // The result will be handled by the chess game hook
@@ -52,7 +54,10 @@ export default function ChessBoard({ gameState, onMove, boardSize, boardOrientat
     onPieceDrop: handlePieceDrop,
     boardOrientation: boardOrientation || "white",
     squareStyles: getCustomSquareStyles(),
-  allowDragging: gameState.isPlayerTurn && !gameState.isGameOver && !gameState.isThinking,
+    allowDragging:
+      ((boardOrientation === 'white' && gameState.isPlayerTurn) ||
+       (boardOrientation === 'black' && !gameState.isPlayerTurn)) &&
+      !gameState.isGameOver && !gameState.isThinking,
     orientation: boardOrientation || "white",
     boardStyle: {
       borderRadius: '4px',

@@ -18,15 +18,22 @@ export default function ChessPage() {
   useEffect(() => {
     if (gameState.isGameOver && gameState.winner !== null) {
       const gameId = `${gameState.fen}-${gameState.winner}`;
-
+      
+      // Only process if we haven't already processed this game end
       if (gameEndProcessedRef.current !== gameId) {
         gameEndProcessedRef.current = gameId;
-
+        
+        // Determine if the player won based on their color and the winner
         if (gameState.winner === 'draw') {
           updateScores('draw');
         } else {
-          const playerWon = (gameState.winner === 'white' && playerIsWhite) || (gameState.winner === 'black' && !playerIsWhite);
-            updateScores(playerWon ? 'win' : 'loss');
+          const playerWon = (playerIsWhite && gameState.winner === 'white') || 
+                           (!playerIsWhite && gameState.winner === 'black');
+          if (playerWon) {
+            updateScores('win');
+          } else {
+            updateScores('loss');
+          }
         }
       }
     }
@@ -35,7 +42,7 @@ export default function ChessPage() {
     if (!gameState.isGameOver) {
       gameEndProcessedRef.current = null;
     }
-  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores, playerIsWhite]);
+  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores]);
 
   // Board orientation is fixed for the game, based on who started
   const boardOrientation = playerIsWhite ? 'white' : 'black';
@@ -76,7 +83,6 @@ export default function ChessPage() {
             gameState={gameState}
             onResetGame={resetGame}
             apiError={apiError}
-            playerIsWhite={playerIsWhite}
           />
           
           <ScoreBoard
