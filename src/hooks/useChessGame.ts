@@ -191,25 +191,25 @@ export function useChessGame() {
 
   const resetGame = useCallback(() => {
     // Alternate who starts
-    setPlayerIsWhite(prev => !prev);
-    const playerStartsWhite = !playerIsWhite;
+    const newPlayerIsWhite = !playerIsWhite;
+    setPlayerIsWhite(newPlayerIsWhite);
     gameRef.current = new Chess();
     setApiError(null);
     
-    const playerColor = playerStartsWhite ? 'White' : 'Black';
-    const aiColor = playerStartsWhite ? 'Black' : 'White';
+    const playerColor = newPlayerIsWhite ? 'White' : 'Black';
+    const aiColor = newPlayerIsWhite ? 'Black' : 'White';
     
     setGameState({
       fen: gameRef.current.fen(),
       isGameOver: false,
       winner: null,
-      isPlayerTurn: playerStartsWhite,
+      isPlayerTurn: newPlayerIsWhite,
       isThinking: false,
-      gameStatus: playerStartsWhite ? `Your turn (${playerColor})` : `AI thinking (${aiColor})`,
+      gameStatus: newPlayerIsWhite ? `Your turn (${playerColor})` : `AI thinking (${aiColor})`,
       lastMove: null,
     });
     // Only trigger Stockfish move if user is black
-    if (!playerStartsWhite) {
+    if (!newPlayerIsWhite) {
       setTimeout(async () => {
         const aiMoveUci = await fetchAiMove(gameRef.current.fen());
         if (aiMoveUci && aiMoveUci.length >= 4) {
