@@ -27,7 +27,7 @@ export function useChessGame() {
     fen: gameRef.current.fen(),
     isGameOver: false,
     winner: null,
-    isPlayerTurn: true,
+    isPlayerTurn: true, // Player starts as white by default
     isThinking: false,
     gameStatus: "Your turn (White)",
     lastMove: null,
@@ -40,6 +40,11 @@ export function useChessGame() {
     const isGameOver = game.isGameOver();
     let winner: 'white' | 'black' | 'draw' | null = null;
     let gameStatus = '';
+
+    // Determine whose turn it is based on the chess engine
+    const whiteToMove = game.turn() === 'w';
+    // Player's turn if: (player is white AND white to move) OR (player is black AND black to move)  
+    const isPlayerTurn = (playerIsWhite && whiteToMove) || (!playerIsWhite && !whiteToMove);
 
     if (isGameOver) {
       if (game.isCheckmate()) {
@@ -61,9 +66,9 @@ export function useChessGame() {
         gameStatus = 'Draw by insufficient material!';
       }
     } else {
-      const isPlayerTurn = playerIsWhite ? (game.turn() === 'w') : (game.turn() === 'b');
       const playerColor = playerIsWhite ? 'White' : 'Black';
       const aiColor = playerIsWhite ? 'Black' : 'White';
+      
       if (game.isCheck()) {
         gameStatus = isPlayerTurn ? `Your turn (${playerColor}) - Check!` : `AI thinking (${aiColor}) - Check!`;
       } else {
@@ -76,7 +81,7 @@ export function useChessGame() {
       fen: game.fen(),
       isGameOver,
       winner,
-      isPlayerTurn: playerIsWhite ? (game.turn() === 'w') : (game.turn() === 'b'),
+      isPlayerTurn,
       gameStatus,
     }));
   }, [playerIsWhite]);
@@ -191,38 +196,62 @@ export function useChessGame() {
   const resetGame = useCallback(() => {
     // Alternate who starts
     setPlayerIsWhite(prev => !prev);
-    const playerStartsWhite = !playerIsWhite;
+    const newPlayerIsWhite = !playerIsWhite;
+    
+    // Reset the chess game
     gameRef.current = new Chess();
     setApiError(null);
+    
+    // Set initial game state
     setGameState({
       fen: gameRef.current.fen(),
       isGameOver: false,
       winner: null,
-      isPlayerTurn: playerStartsWhite,
+      isPlayerTurn: newPlayerIsWhite, // If player is white, it's their turn. If black, AI goes first
       isThinking: false,
-      gameStatus: playerStartsWhite ? "Your turn (White)" : "AI thinking (White)",
+      gameStatus: newPlayerIsWhite ? "Your turn (White)" : "AI thinking (White)",
       lastMove: null,
     });
-    // Only trigger Stockfish move if user is black
-    if (!playerStartsWhite) {
+    
+    // If player is black, AI (white) needs to make the first move
+    if (!newPlayerIsWhite) {
       setTimeout(async () => {
+        setGameState(prev => ({ ...prev, isThinking: true }));
+        
         const aiMoveUci = await fetchAiMove(gameRef.current.fen());
         if (aiMoveUci && aiMoveUci.length >= 4) {
           const aiFrom = aiMoveUci.substring(0, 2);
           const aiTo = aiMoveUci.substring(2, 4);
           const aiPromotion = aiMoveUci.length > 4 ? aiMoveUci[4] : undefined;
-          gameRef.current.move({ from: aiFrom, to: aiTo, promotion: aiPromotion || 'q' });
-          updateGameState();
+          
+          const aiMove = gameRef.current.move({ 
+            from: aiFrom, 
+            to: aiTo, 
+            promotion: aiPromotion || 'q' 
+          });
+          
+          if (aiMove) {
+            setGameState(prev => ({
+              ...prev,
+              fen: gameRef.current.fen(),
+              lastMove: { from: aiFrom, to: aiTo },
+              isPlayerTurn: true, // Now it's player's (black) turn
+              isThinking: false,
+              gameStatus: "Your turn (Black)"
+            }));
+          }
+        } else {
+          setGameState(prev => ({ ...prev, isThinking: false }));
         }
       }, 500);
     }
-  }, []);
+  }, [playerIsWhite, fetchAiMove]);
 
   return {
-  gameState,
-  makePlayerMove,
-  resetGame,
-  apiError,
-  playerIsWhite,
+    gameState,
+    makePlayerMove,
+    resetGame,
+    apiError,
+    playerIsWhite,
   };
 }
