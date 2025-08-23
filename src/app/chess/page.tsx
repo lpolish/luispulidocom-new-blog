@@ -1,18 +1,29 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useChessGame } from '@/hooks/useChessGame';
-import { useLocalScores } from '@/hooks/useLocalScores';
+import { useChessScores } from '@/hooks/useChessScores';
+import { useAuth } from '@/contexts/AuthContext';
 import ChessBoard from '@/components/chess/ChessBoard';
 import GameStatus from '@/components/chess/GameStatus';
 import ScoreBoard from '@/components/chess/ScoreBoard';
+import AuthModal from '@/components/auth/AuthModal';
 import { metadata } from './metadata';
 
 export default function ChessPage() {
+  const { user, signOut } = useAuth();
   const { gameState, makePlayerMove, resetGame, apiError, playerIsWhite } = useChessGame();
-  const { scores, updateScores, resetScores, isLoaded } = useLocalScores();
+  const { scores, updateScores, resetScores, isLoaded, isAuthenticated, migrateLocalScores } = useChessScores();
   const gameEndProcessedRef = useRef<string | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Migrate local scores when user signs in
+  useEffect(() => {
+    if (user && isLoaded) {
+      migrateLocalScores();
+    }
+  }, [user, isLoaded, migrateLocalScores]);
 
   // Update scores when game ends (only once per game)
   useEffect(() => {
@@ -23,16 +34,23 @@ export default function ChessPage() {
       if (gameEndProcessedRef.current !== gameId) {
         gameEndProcessedRef.current = gameId;
         
+        // Prepare game data for database storage
+        const gameData = {
+          playerColor: playerIsWhite ? 'white' : 'black',
+          fen: gameState.fen,
+          movesCount: gameState.fen.split(' ')[5] || 0, // Full move counter from FEN
+        };
+        
         // Determine if the player won based on their color and the winner
         if (gameState.winner === 'draw') {
-          updateScores('draw');
+          updateScores('draw', gameData);
         } else {
           const playerWon = (playerIsWhite && gameState.winner === 'white') || 
                            (!playerIsWhite && gameState.winner === 'black');
           if (playerWon) {
-            updateScores('win');
+            updateScores('win', gameData);
           } else {
-            updateScores('loss');
+            updateScores('loss', gameData);
           }
         }
       }
@@ -42,12 +60,51 @@ export default function ChessPage() {
     if (!gameState.isGameOver) {
       gameEndProcessedRef.current = null;
     }
-  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores]);
+  }, [gameState.isGameOver, gameState.winner, gameState.fen, updateScores, playerIsWhite]);
+
+  // Authentication section component
+  const AuthSection = () => (
+    <div className="text-center mb-6 p-4 bg-backgroundMuted border border-border rounded-lg">
+      {user ? (
+        <div className="flex items-center justify-center gap-4">
+          <div className="text-sm">
+            <span className="text-textMuted">Signed in as </span>
+            <span className="text-text font-medium">{user.email}</span>
+            <div className="text-xs text-accent mt-1">
+              {isAuthenticated ? 'Scores are saved to your account' : 'Scores saved locally'}
+            </div>
+          </div>
+          <button
+            onClick={signOut}
+            className="text-sm text-accent hover:text-accent2 underline transition-colors"
+          >
+            Sign Out
+          </button>
+        </div>
+      ) : (
+        <div>
+          <p className="text-textMuted mb-3">
+            Create a free account to save your chess scores across devices!
+          </p>
+          <button
+            onClick={() => setShowAuthModal(true)}
+            className="bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent2 transition-colors font-medium"
+          >
+            Sign In / Create Account
+          </button>
+        </div>
+      )}
+    </div>
+  );
 
   // Board orientation is fixed for the game, based on who started
   const boardOrientation = playerIsWhite ? 'white' : 'black';
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      {/* Authentication Section */}
+      <AuthSection />
+
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-text mb-4">
@@ -104,6 +161,12 @@ export default function ChessPage() {
           </div>
         </div>
       </div>
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </div>
   );
 }
