@@ -29,6 +29,10 @@ export function createServerClient() {
           }
         },
       },
+      auth: {
+        flowType: 'pkce',
+        autoRefreshToken: true,
+      },
     }
   )
 }
