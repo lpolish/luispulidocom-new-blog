@@ -14,6 +14,7 @@
 - **Dynamic Blog & Pages**: Blog, About, Contact, Privacy, Terms, and more
 - **Recent Posts & RSS**: Automated feeds and recent posts
 - **Chess Section**: Interactive chessboard and game status
+- **Chess Authentication**: User accounts with score persistence across devices
 - **Accessibility**: Minimal, distraction-free, keyboard-friendly
 
 ## 🖼️ Screenshots
@@ -36,6 +37,8 @@ Chess against AI:
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Authentication**: Supabase Auth with email verification
+- **Database**: Supabase PostgreSQL with Row Level Security
 - **Content**: Markdown, gray-matter, remark
 - **Deployment**: Static export (Netlify, Vercel, GitHub Pages)
 
@@ -47,6 +50,7 @@ Chess against AI:
 
 - Node.js >= 18.17.0
 - pnpm (recommended) or npm
+- Supabase account (for authentication features)
 
 ### Installation
 
@@ -54,10 +58,19 @@ Chess against AI:
 git clone https://github.com/lpolish/luispulidocom-new-blog.git
 cd blog
 pnpm install # or npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
+
 pnpm dev     # or npm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000)
+
+### Authentication Setup
+
+For full authentication features, see [SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md) for detailed Supabase configuration.
 
 ---
 
