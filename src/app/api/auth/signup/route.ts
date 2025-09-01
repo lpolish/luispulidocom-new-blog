@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.SITE_URL || 'http://localhost:3000'}/auth/callback`,
+        emailRedirectTo: `${process.env.SITE_URL}/auth/callback`,
       },
     })
 

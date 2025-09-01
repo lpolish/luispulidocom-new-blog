@@ -16,20 +16,38 @@ export default function ResetPassword() {
   const supabase = createClient()
 
   useEffect(() => {
-    // Check if we have the required tokens in the URL
+    // Check if we have the required parameters in the URL
+    const code = searchParams.get('code')
     const accessToken = searchParams.get('access_token')
     const refreshToken = searchParams.get('refresh_token')
 
-    if (!accessToken || !refreshToken) {
-      setError('Invalid or expired reset link. Please request a new password reset.')
+    // Handle code-based flow (newer Supabase auth)
+    if (code) {
+      // Exchange the code for a session
+      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+        if (error) {
+          console.error('Error exchanging code:', error)
+          setError('Invalid or expired reset link. Please request a new password reset.')
+        } else if (data.session) {
+          // Session is now active, user can reset password
+          console.log('Session established successfully')
+        }
+      })
       return
     }
 
-    // Set the session with the tokens from the URL
-    supabase.auth.setSession({
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    })
+    // Handle token-based flow (legacy)
+    if (accessToken && refreshToken) {
+      // Set the session with the tokens from the URL
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      })
+      return
+    }
+
+    // No valid parameters found
+    setError('Invalid or expired reset link. Please request a new password reset.')
   }, [searchParams, supabase.auth])
 
   const handleSubmit = async (e: React.FormEvent) => {
