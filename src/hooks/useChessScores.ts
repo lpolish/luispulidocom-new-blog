@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useCustomAuth } from '@/contexts/CustomAuthContext'
 
 export interface ChessScores {
   wins: number
@@ -20,7 +20,7 @@ const defaultScores: ChessScores = {
 const SCORES_STORAGE_KEY = 'chessScores'
 
 export function useChessScores() {
-  const { user } = useAuth()
+  const { user } = useCustomAuth()
   const [scores, setScores] = useState<ChessScores>(defaultScores)
   const [isLoaded, setIsLoaded] = useState(false)
 

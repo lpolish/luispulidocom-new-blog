@@ -256,23 +256,34 @@ Using Google reCAPTCHA v3 (invisible) for:
 
 ## Current Blockers
 
-1. **Database Schema Update** - Need to add password_hash field to existing schema
-2. **Auth Context Migration** - Replace existing Supabase auth context
+1. **Database Schema Update** - Need to add password_hash field to existing schema ✅ **RESOLVED**
+2. **Auth Context Migration** - Replace existing Supabase auth context ✅ **RESOLVED**
 3. **ReCAPTCHA Form Integration** - Update component for form submissions
-4. **Chess Page Updates** - Migrate from Supabase auth to custom auth
+4. **Chess Page Updates** - Migrate from Supabase auth to custom auth ✅ **RESOLVED**
 
-## Build Errors (To Fix)
+## Build Status: ✅ SUCCESSFUL
 
-The current build fails with the following error:
+The build errors have been resolved! The main issues were:
+- `useChessScores.ts` was using old `useAuth` hook instead of `useCustomAuth`
+- `AuthModal.tsx` was using old `useAuth` hook instead of `useCustomAuth`
 
-```
-Error: useAuth must be used within AuthProvider
-    at /home/luis/source/mio/blog/.next/server/app/chess/page.js:16:9900
-```
+**Resolution**: Updated both files to use the new `useCustomAuth` hook from `CustomAuthContext`.
 
-**Root Cause**: The chess page (`src/app/chess/page.tsx`) is still using the old `useAuth` hook from the original Supabase AuthContext, but the layout has been updated to use `CustomAuthProvider`. 
+## Password Reset Functionality
 
-**Solution**: Update the chess page to use `useCustomAuth` instead of `useAuth`.
+The password reset feature is working correctly and uses Supabase's built-in auth system:
+
+- **Reset Page**: `/auth/reset-password` - Fully functional
+- **Email Flow**: Users receive reset emails from Supabase
+- **Token Handling**: Supports both code-based (newer) and token-based (legacy) flows
+- **Security**: Uses Supabase's secure password reset mechanism
+
+**How it works**:
+1. User clicks "Forgot Password" → redirects to `/auth/reset-password`
+2. User enters email → Supabase sends reset email
+3. User clicks link in email → redirected to reset page with auth tokens
+4. User enters new password → password updated via Supabase API
+5. Success → redirected to `/chess` page
 
 ## Next Steps to Continue
 
