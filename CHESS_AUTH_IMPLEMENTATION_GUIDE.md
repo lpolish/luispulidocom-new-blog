@@ -258,16 +258,54 @@ Using Google reCAPTCHA v3 (invisible) for:
 
 1. **Database Schema Update** - Need to add password_hash field to existing schema ✅ **RESOLVED**
 2. **Auth Context Migration** - Replace existing Supabase auth context ✅ **RESOLVED**
-3. **ReCAPTCHA Form Integration** - Update component for form submissions
-4. **Chess Page Updates** - Migrate from Supabase auth to custom auth ✅ **RESOLVED**
+3. **Chess Score Saving** - Scores not persisting to user accounts ✅ **RESOLVED**
+4. **Reset Confirmation** - Prevent accidental score resets ✅ **RESOLVED**
+5. **ReCAPTCHA Form Integration** - Update component for form submissions
 
 ## Build Status: ✅ SUCCESSFUL
 
 The build errors have been resolved! The main issues were:
 - `useChessScores.ts` was using old `useAuth` hook instead of `useCustomAuth`
 - `AuthModal.tsx` was using old `useAuth` hook instead of `useCustomAuth`
+- Chess API routes were using Supabase auth instead of custom JWT auth
 
 **Resolution**: Updated both files to use the new `useCustomAuth` hook from `CustomAuthContext`.
+
+## Chess Score Persistence: ✅ FIXED
+
+**Problem**: Scores were not being saved to user accounts and were resetting on page refresh.
+
+**Root Cause**: Chess API routes were using old Supabase auth system instead of custom JWT auth.
+
+**Solution**: 
+- Updated `/api/chess/scores` and `/api/chess/scores/migrate` routes
+- Added JWT token verification from cookies
+- Fixed user ID references from `user.id` to `user.userId`
+- Chess scores now properly save to authenticated user accounts
+
+## Reset Confirmation: ✅ IMPLEMENTED
+
+**Problem**: Reset scores button was too easy to accidentally click.
+
+**Solution**: Added confirmation dialog modal that requires explicit user confirmation before resetting scores.
+
+## Password Reset Functionality
+
+The password reset feature is working correctly and uses Supabase's built-in auth system:
+
+- **Reset Page**: `/auth/reset-password` - Fully functional
+- **Email Flow**: Users receive reset emails from Supabase
+- **Token Handling**: Supports both code-based (newer) and token-based (legacy) flows
+- **Security**: Uses Supabase's secure password reset mechanism
+
+**How it works**:
+1. User clicks "Forgot Password" → redirects to `/auth/reset-password`
+2. User enters email → Supabase sends secure reset email
+3. User clicks link in email → redirected to reset page with auth tokens
+4. User enters new password → password updated via Supabase API
+5. Success → redirected to `/chess` page
+
+## Next Steps to Continue
 
 ## Password Reset Functionality
 
