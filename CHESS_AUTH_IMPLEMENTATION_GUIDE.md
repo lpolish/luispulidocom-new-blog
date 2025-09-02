@@ -261,28 +261,52 @@ Using Google reCAPTCHA v3 (invisible) for:
 3. **ReCAPTCHA Form Integration** - Update component for form submissions
 4. **Chess Page Updates** - Migrate from Supabase auth to custom auth
 
+## Build Errors (To Fix)
+
+The current build fails with the following error:
+
+```
+Error: useAuth must be used within AuthProvider
+    at /home/luis/source/mio/blog/.next/server/app/chess/page.js:16:9900
+```
+
+**Root Cause**: The chess page (`src/app/chess/page.tsx`) is still using the old `useAuth` hook from the original Supabase AuthContext, but the layout has been updated to use `CustomAuthProvider`. 
+
+**Solution**: Update the chess page to use `useCustomAuth` instead of `useAuth`.
+
 ## Next Steps to Continue
 
-1. **Update Database Schema**
+1. **Fix Chess Page Auth Import**
+   ```typescript
+   // Change this:
+   import { useAuth } from '@/contexts/AuthContext'
+   const { user, signOut } = useAuth()
+   
+   // To this:
+   import { useCustomAuth } from '@/contexts/CustomAuthContext'
+   const { user, signOut } = useCustomAuth()
+   ```
+
+2. **Update Database Schema**
    ```bash
    # Run this in Supabase SQL editor
    ALTER TABLE public.user_profiles ADD COLUMN password_hash TEXT;
    ```
 
-2. **Create Custom Auth Context**
+3. **Create Custom Auth Context**
    - Implement `src/contexts/CustomAuthContext.tsx`
    - Handle JWT token refresh
    - Provide user state management
 
-3. **Update ReCAPTCHA Component**
+4. **Update ReCAPTCHA Component**
    - Add form submission support
    - Implement token verification
 
-4. **Create Auth Form Component**
+5. **Create Auth Form Component**
    - Build reusable form with validation
    - Integrate reCAPTCHA
 
-5. **Update Chess Page**
+6. **Update Chess Page**
    - Replace auth imports
    - Test score persistence
 

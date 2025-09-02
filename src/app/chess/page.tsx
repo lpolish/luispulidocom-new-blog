@@ -9,7 +9,9 @@ import ChessBoard from '@/components/chess/ChessBoard';
 import GameStatus from '@/components/chess/GameStatus';
 import ScoreBoard from '@/components/chess/ScoreBoard';
 import AuthForm from '@/components/AuthForm';
-import { metadata } from './metadata';
+
+// Force dynamic rendering to avoid SSR issues with auth
+export const dynamic = 'force-dynamic';
 
 export default function ChessPage() {
   const { user, signOut } = useCustomAuth();

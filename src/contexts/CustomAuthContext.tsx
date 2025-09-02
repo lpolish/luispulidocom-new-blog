@@ -1,7 +1,6 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { JWTPayload, getUserFromToken } from '@/lib/auth/jwt'
 
 interface CustomUser {
   id: string
@@ -36,18 +35,14 @@ export function CustomAuthProvider({ children }: CustomAuthProviderProps) {
   const [user, setUser] = useState<CustomUser | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Initialize user from token on mount
+  // Initialize user on mount by checking auth status
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        const tokenPayload = await getUserFromToken()
-        if (tokenPayload) {
-          // Fetch user data from API to get display name
-          const response = await fetch('/api/custom-auth/me')
-          if (response.ok) {
-            const userData = await response.json()
-            setUser(userData.user)
-          }
+        const response = await fetch('/api/custom-auth/me')
+        if (response.ok) {
+          const data = await response.json()
+          setUser(data.user)
         }
       } catch (error) {
         console.error('Error initializing auth:', error)

@@ -1,14 +1,25 @@
 import { NextResponse } from 'next/server'
-import { getUserFromToken } from '@/lib/auth/jwt'
+import { verifyAccessToken } from '@/lib/auth/jwt'
 import { createServerClient } from '@/lib/supabase/server'
+import { cookies } from 'next/headers'
 
 export async function GET() {
   try {
-    const tokenPayload = await getUserFromToken()
+    const cookieStore = await cookies()
+    const token = cookieStore.get('auth-token')?.value
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      )
+    }
+
+    const tokenPayload = verifyAccessToken(token)
 
     if (!tokenPayload) {
       return NextResponse.json(
-        { error: 'Not authenticated' },
+        { error: 'Invalid token' },
         { status: 401 }
       )
     }

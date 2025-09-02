@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { createServerClient } from '@/lib/supabase/server'
-import { generateAccessToken, generateRefreshToken, setAuthCookies } from '@/lib/auth/jwt'
+import { generateAccessToken, generateRefreshToken } from '@/lib/auth/jwt'
+import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
@@ -68,7 +69,20 @@ export async function POST(request: NextRequest) {
     })
 
     // Set cookies
-    await setAuthCookies(accessToken, refreshToken)
+    const cookieStore = await cookies()
+    cookieStore.set('auth-token', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60, // 15 minutes
+    })
+
+    cookieStore.set('refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+    })
 
     return NextResponse.json({
       success: true,
