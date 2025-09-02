@@ -8,6 +8,7 @@
 CREATE TABLE IF NOT EXISTS public.user_profiles (
   id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
   email TEXT NOT NULL,
+  password_hash TEXT, -- Added for custom auth
   username TEXT UNIQUE,
   display_name TEXT,
   avatar_url TEXT,

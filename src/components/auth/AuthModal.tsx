@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useCustomAuth } from '@/contexts/CustomAuthContext'
 import { X } from 'lucide-react'
 
 interface AuthModalProps {
@@ -19,7 +19,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
 
-  const { signIn, signUp, resetPassword } = useAuth()
+  const { signIn, signUp } = useCustomAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -51,12 +51,9 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
           setMessage('Check your email for verification link!')
         }
       } else if (mode === 'reset') {
-        const { error } = await resetPassword(email)
-        if (error) {
-          setError(error)
-        } else {
-          setMessage('Password reset email sent!')
-        }
+        // Redirect to the reset password page
+        window.location.href = '/auth/reset-password'
+        return
       }
     } finally {
       setLoading(false)

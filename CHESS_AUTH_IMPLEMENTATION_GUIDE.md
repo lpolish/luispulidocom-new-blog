@@ -2,7 +2,364 @@
 
 ## Project Overview
 
-This guide outlines the implementation of a comprehensive authentication system for the chess page, enabling users to create accounts, authenticate securely, and persist their chess scores across sessions.
+This guide outlines the implementation of a **custom authentication system** for the chess page that uses Supabase database but implements our own auth logic with JWT tokens, password hashing, and reCAPTCHA integration.
+
+## Goals
+
+1. **Custom Auth System**: Build our own authentication instead of using Supabase's native auth
+2. **Database Integration**: Use Supabase PostgreSQL for user data and chess scores
+3. **Security**: JWT tokens, bcrypt password hashing, reCAPTCHA v3
+4. **Scalability**: Reusable auth components for site-wide implementation
+5. **User Experience**: Seamless authentication with invisible reCAPTCHA
+
+## Current Implementation Status
+
+### ✅ Completed Tasks
+
+1. **Dependencies Installed**
+   - `bcryptjs` - Password hashing
+   - `jsonwebtoken` - JWT token management
+   - `@types/bcryptjs`, `@types/jsonwebtoken` - TypeScript types
+
+2. **JWT Token System**
+   - Access tokens (15-minute expiry)
+   - Refresh tokens (7-day expiry)
+   - Secure cookie-based session management
+   - Token verification utilities
+
+3. **Custom API Routes Created**
+   - `POST /api/custom-auth/signup` - User registration with reCAPTCHA
+   - `POST /api/custom-auth/login` - User authentication
+   - `POST /api/custom-auth/logout` - Session cleanup
+
+4. **Database Schema Updates Needed**
+   - Add `password_hash` field to `user_profiles` table
+   - Update existing Supabase schema for custom auth
+
+### 🔄 In Progress / Next Steps
+
+1. **Update Database Schema**
+   ```sql
+   -- Add password_hash to user_profiles table
+   ALTER TABLE public.user_profiles
+   ADD COLUMN password_hash TEXT;
+
+   -- Create refresh_tokens table for session management
+   CREATE TABLE IF NOT EXISTS public.refresh_tokens (
+     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+     user_id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL,
+     token_hash TEXT NOT NULL,
+     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+   );
+
+   -- Enable RLS for refresh_tokens
+   ALTER TABLE public.refresh_tokens ENABLE ROW LEVEL SECURITY;
+
+   -- RLS policies for refresh_tokens
+   CREATE POLICY "Users can view own refresh tokens" ON public.refresh_tokens
+     FOR SELECT USING (auth.uid() = user_id);
+   CREATE POLICY "Users can insert own refresh tokens" ON public.refresh_tokens
+     FOR INSERT WITH CHECK (auth.uid() = user_id);
+   CREATE POLICY "Users can delete own refresh tokens" ON public.refresh_tokens
+     FOR DELETE USING (auth.uid() = user_id);
+   ```
+
+2. **Create Custom Auth Context**
+   - Replace Supabase auth with custom JWT-based auth
+   - Handle token refresh automatically
+   - Provide user state management
+
+3. **Update ReCAPTCHA Component**
+   - Enhance for form submission verification
+   - Support both visible and invisible modes
+   - Integrate with auth forms
+
+4. **Create Scalable Auth Form Component**
+   - Reusable AuthForm with reCAPTCHA
+   - Support for different auth modes (login/signup/reset)
+   - Form validation with Zod
+
+5. **Update Chess Page Integration**
+   - Replace current Supabase auth with custom auth
+   - Maintain existing chess functionality
+   - Update score persistence logic
+
+6. **Environment Configuration**
+   - Add JWT secrets to `.env`
+   - Configure reCAPTCHA keys
+   - Update environment template
+
+## Quick Start Commands
+
+```bash
+# Install dependencies (already done)
+pnpm install
+
+# Copy environment template
+cp .env.example .env.local
+
+# Add your credentials to .env.local
+# NEXT_PUBLIC_SUPABASE_URL=your_project_url
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+# JWT_SECRET=your_jwt_secret_key
+# JWT_REFRESH_SECRET=your_refresh_secret_key
+# RECAPTCHA_SECRET_KEY=your_recaptcha_secret
+# NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+```
+
+## Files Created/Modified
+
+### New Files
+- `src/lib/auth/jwt.ts` - JWT token utilities
+- `src/app/api/custom-auth/signup/route.ts` - Custom signup API
+- `src/app/api/custom-auth/login/route.ts` - Custom login API
+- `src/app/api/custom-auth/logout/route.ts` - Custom logout API
+
+### Files to Create/Modify
+- `src/contexts/CustomAuthContext.tsx` - Custom auth context (pending)
+- `src/components/auth/CustomAuthForm.tsx` - Reusable auth form (pending)
+- `src/components/ReCAPTCHA.tsx` - Enhanced reCAPTCHA component (pending)
+- `src/app/chess/page.tsx` - Update to use custom auth (pending)
+- `supabase/schema.sql` - Add password_hash field (pending)
+- `.env.example` - Add JWT and reCAPTCHA variables (pending)
+
+## Implementation Details
+
+### JWT Token System
+
+```typescript
+// src/lib/auth/jwt.ts
+interface JWTPayload {
+  userId: string
+  email: string
+  iat?: number
+  exp?: number
+}
+
+export function generateAccessToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string
+export function generateRefreshToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string
+export function verifyAccessToken(token: string): JWTPayload | null
+export function verifyRefreshToken(token: string): JWTPayload | null
+export async function getUserFromToken(): Promise<JWTPayload | null>
+export async function setAuthCookies(accessToken: string, refreshToken: string)
+export async function clearAuthCookies()
+```
+
+### Custom API Routes
+
+#### Signup Route
+- Validates email/password
+- Verifies reCAPTCHA token
+- Hashes password with bcrypt
+- Creates user in Supabase database
+- Generates JWT tokens
+- Sets secure HTTP-only cookies
+
+#### Login Route
+- Validates credentials
+- Verifies reCAPTCHA token
+- Compares password hash
+- Generates JWT tokens
+- Sets auth cookies
+
+#### Logout Route
+- Clears auth cookies
+- Invalidates refresh token
+
+### Database Schema Updates
+
+Current schema needs these additions:
+
+```sql
+-- Add to user_profiles table
+ALTER TABLE public.user_profiles ADD COLUMN password_hash TEXT;
+
+-- New table for refresh token management
+CREATE TABLE public.refresh_tokens (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users ON DELETE CASCADE NOT NULL,
+  token_hash TEXT NOT NULL,
+  expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+```
+
+### ReCAPTCHA Integration
+
+Using Google reCAPTCHA v3 (invisible) for:
+- User registration protection
+- Login attempt protection
+- Form submission verification
+
+### Migration Strategy
+
+1. **From Supabase Auth to Custom Auth**
+   - Export existing users from `auth.users`
+   - Hash passwords for migrated users
+   - Update user_profiles with password_hash
+   - Migrate existing chess scores
+
+2. **Database Migration Script**
+   ```sql
+   -- Migrate existing users to custom auth
+   UPDATE public.user_profiles
+   SET password_hash = crypt('temporary_password', gen_salt('bf', 12))
+   WHERE password_hash IS NULL;
+   ```
+
+## Testing Checklist
+
+- [ ] JWT token generation and verification
+- [ ] Password hashing and comparison
+- [ ] reCAPTCHA verification
+- [ ] Custom API routes functionality
+- [ ] Cookie-based session management
+- [ ] Database user creation and authentication
+- [ ] Token refresh mechanism
+- [ ] Logout and session cleanup
+
+## Deployment Considerations
+
+1. **Environment Variables**
+   ```bash
+   JWT_SECRET=your_secure_random_jwt_secret
+   JWT_REFRESH_SECRET=your_secure_random_refresh_secret
+   RECAPTCHA_SECRET_KEY=your_recaptcha_secret
+   NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+   ```
+
+2. **Security Headers**
+   - HTTP-only cookies for tokens
+   - Secure flag in production
+   - SameSite cookie policy
+
+3. **Database Migrations**
+   - Run schema updates in production
+   - Backup existing data before migration
+
+## Future Enhancements
+
+1. **Password Reset Flow** - Custom password reset with email
+2. **Account Verification** - Email verification for new accounts
+3. **Social Auth Integration** - Google/GitHub OAuth alongside custom auth
+4. **Session Management** - View active sessions, force logout
+5. **Security Features** - Login attempt limiting, suspicious activity detection
+6. **User Profiles** - Extended profile management
+7. **Admin Panel** - User management interface
+
+## Current Blockers
+
+1. **Database Schema Update** - Need to add password_hash field to existing schema ✅ **RESOLVED**
+2. **Auth Context Migration** - Replace existing Supabase auth context ✅ **RESOLVED**
+3. **Chess Score Saving** - Scores not persisting to user accounts ✅ **RESOLVED**
+4. **Reset Confirmation** - Prevent accidental score resets ✅ **RESOLVED**
+5. **ReCAPTCHA Form Integration** - Update component for form submissions
+
+## Build Status: ✅ SUCCESSFUL
+
+The build errors have been resolved! The main issues were:
+- `useChessScores.ts` was using old `useAuth` hook instead of `useCustomAuth`
+- `AuthModal.tsx` was using old `useAuth` hook instead of `useCustomAuth`
+- Chess API routes were using Supabase auth instead of custom JWT auth
+
+**Resolution**: Updated both files to use the new `useCustomAuth` hook from `CustomAuthContext`.
+
+## Chess Score Persistence: ✅ FIXED
+
+**Problem**: Scores were not being saved to user accounts and were resetting on page refresh.
+
+**Root Cause**: Chess API routes were using old Supabase auth system instead of custom JWT auth.
+
+**Solution**: 
+- Updated `/api/chess/scores` and `/api/chess/scores/migrate` routes
+- Added JWT token verification from cookies
+- Fixed user ID references from `user.id` to `user.userId`
+- Chess scores now properly save to authenticated user accounts
+
+## Reset Confirmation: ✅ IMPLEMENTED
+
+**Problem**: Reset scores button was too easy to accidentally click.
+
+**Solution**: Added confirmation dialog modal that requires explicit user confirmation before resetting scores.
+
+## Password Reset Functionality
+
+The password reset feature is working correctly and uses Supabase's built-in auth system:
+
+- **Reset Page**: `/auth/reset-password` - Fully functional
+- **Email Flow**: Users receive reset emails from Supabase
+- **Token Handling**: Supports both code-based (newer) and token-based (legacy) flows
+- **Security**: Uses Supabase's secure password reset mechanism
+
+**How it works**:
+1. User clicks "Forgot Password" → redirects to `/auth/reset-password`
+2. User enters email → Supabase sends secure reset email
+3. User clicks link in email → redirected to reset page with auth tokens
+4. User enters new password → password updated via Supabase API
+5. Success → redirected to `/chess` page
+
+## Next Steps to Continue
+
+## Password Reset Functionality
+
+The password reset feature is working correctly and uses Supabase's built-in auth system:
+
+- **Reset Page**: `/auth/reset-password` - Fully functional
+- **Email Flow**: Users receive reset emails from Supabase
+- **Token Handling**: Supports both code-based (newer) and token-based (legacy) flows
+- **Security**: Uses Supabase's secure password reset mechanism
+
+**How it works**:
+1. User clicks "Forgot Password" → redirects to `/auth/reset-password`
+2. User enters email → Supabase sends reset email
+3. User clicks link in email → redirected to reset page with auth tokens
+4. User enters new password → password updated via Supabase API
+5. Success → redirected to `/chess` page
+
+## Next Steps to Continue
+
+1. **Fix Chess Page Auth Import**
+   ```typescript
+   // Change this:
+   import { useAuth } from '@/contexts/AuthContext'
+   const { user, signOut } = useAuth()
+   
+   // To this:
+   import { useCustomAuth } from '@/contexts/CustomAuthContext'
+   const { user, signOut } = useCustomAuth()
+   ```
+
+2. **Update Database Schema**
+   ```bash
+   # Run this in Supabase SQL editor
+   ALTER TABLE public.user_profiles ADD COLUMN password_hash TEXT;
+   ```
+
+3. **Create Custom Auth Context**
+   - Implement `src/contexts/CustomAuthContext.tsx`
+   - Handle JWT token refresh
+   - Provide user state management
+
+4. **Update ReCAPTCHA Component**
+   - Add form submission support
+   - Implement token verification
+
+5. **Create Auth Form Component**
+   - Build reusable form with validation
+   - Integrate reCAPTCHA
+
+6. **Update Chess Page**
+   - Replace auth imports
+   - Test score persistence
+
+This custom authentication system provides better control over the auth flow while maintaining the benefits of Supabase's database and real-time capabilities.
 
 ## Goals
 

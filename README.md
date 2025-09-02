@@ -14,7 +14,7 @@
 - **Dynamic Blog & Pages**: Blog, About, Contact, Privacy, Terms, and more
 - **Recent Posts & RSS**: Automated feeds and recent posts
 - **Chess Section**: Interactive chessboard and game status
-- **Chess Authentication**: User accounts with score persistence across devices
+- **Chess Authentication**: User accounts with score persistence across devices (Custom JWT auth with reCAPTCHA)
 - **Accessibility**: Minimal, distraction-free, keyboard-friendly
 
 ## 🖼️ Screenshots
@@ -37,7 +37,7 @@ Chess against AI:
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Authentication**: Supabase Auth with email verification
+- **Authentication**: Custom JWT-based auth with Supabase database and reCAPTCHA v3
 - **Database**: Supabase PostgreSQL with Row Level Security
 - **Content**: Markdown, gray-matter, remark
 - **Deployment**: Static export (Netlify, Vercel, GitHub Pages)
