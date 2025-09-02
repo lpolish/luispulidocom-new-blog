@@ -5,7 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { CustomAuthProvider } from "@/contexts/CustomAuthContext";
+import { ReCAPTCHAProvider } from "@/components/ReCAPTCHA";
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github-dark.css';
 
@@ -93,15 +94,17 @@ export default function RootLayout({
         }} />
       </head>
       <body className={`${inter.className} bg-background text-text antialiased`}>
-        <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow animate-fade-in">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </AuthProvider>
+        <ReCAPTCHAProvider>
+          <CustomAuthProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-grow animate-fade-in">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </CustomAuthProvider>
+        </ReCAPTCHAProvider>
         <Analytics />
         <SpeedInsights />
       </body>

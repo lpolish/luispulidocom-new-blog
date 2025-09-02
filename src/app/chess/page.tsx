@@ -4,15 +4,15 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useChessGame } from '@/hooks/useChessGame';
 import { useChessScores } from '@/hooks/useChessScores';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCustomAuth } from '@/contexts/CustomAuthContext';
 import ChessBoard from '@/components/chess/ChessBoard';
 import GameStatus from '@/components/chess/GameStatus';
 import ScoreBoard from '@/components/chess/ScoreBoard';
-import AuthModal from '@/components/auth/AuthModal';
+import AuthForm from '@/components/AuthForm';
 import { metadata } from './metadata';
 
 export default function ChessPage() {
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useCustomAuth();
   const { gameState, makePlayerMove, resetGame, apiError, playerIsWhite } = useChessGame();
   const { scores, updateScores, resetScores, isLoaded, isAuthenticated, migrateLocalScores } = useChessScores();
   const gameEndProcessedRef = useRef<string | null>(null);
@@ -163,7 +163,7 @@ export default function ChessPage() {
       </div>
 
       {/* Authentication Modal */}
-      <AuthModal
+      <AuthForm
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
