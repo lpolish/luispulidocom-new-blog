@@ -1,21 +1,22 @@
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, getClientIP, RATE_LIMITS } from '@/lib/rate-limit'
 import { validateAndParse, chessScoreUpdateSchema, isValidFEN } from '@/lib/validation'
+import { verifyAuthToken } from '@/lib/auth/jwt'
 
-export async function GET() {
-  const supabase = createServerClient()
-  
-  const { data: { user }, error: userError } = await supabase.auth.getUser()
-  
-  if (userError || !user) {
+export async function GET(request: NextRequest) {
+  // Verify JWT token
+  const user = verifyAuthToken(request)
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  const supabase = createClient()
 
   const { data: scores, error } = await supabase
     .from('chess_scores')
     .select('wins, losses, draws, total_games, win_rate')
-    .eq('user_id', user.id)
+    .eq('user_id', user.userId)
     .single()
 
   if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
@@ -45,11 +46,11 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const supabase = createServerClient()
+  const supabase = createClient()
   
-  const { data: { user }, error: userError } = await supabase.auth.getUser()
-  
-  if (userError || !user) {
+  // Verify JWT token
+  const user = verifyAuthToken(request)
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
     const { data: resetScores, error } = await supabase
       .from('chess_scores')
       .upsert({
-        user_id: user.id,
+        user_id: user.userId,
         wins: 0,
         losses: 0,
         draws: 0
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
   const { data: existingScores } = await supabase
     .from('chess_scores')
     .select('wins, losses, draws')
-    .eq('user_id', user.id)
+    .eq('user_id', user.userId)
     .single()
 
   const newScores = existingScores || { wins: 0, losses: 0, draws: 0 }
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
   const { data: updatedScores, error } = await supabase
     .from('chess_scores')
     .upsert({
-      user_id: user.id,
+      user_id: user.userId,
       ...newScores
     })
     .select()
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
   // Optionally save game history
   if (gameData) {
     await supabase.from('chess_games').insert({
-      user_id: user.id,
+      user_id: user.userId,
       player_color: gameData.playerColor,
       result,
       final_fen: gameData.fen,

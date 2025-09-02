@@ -1,15 +1,16 @@
-import { createServerClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { validateAndParse, chessScoreMigrationSchema } from '@/lib/validation'
+import { verifyAuthToken } from '@/lib/auth/jwt'
 
 export async function POST(request: NextRequest) {
-  const supabase = createServerClient()
-  
-  const { data: { user }, error: userError } = await supabase.auth.getUser()
-  
-  if (userError || !user) {
+  // Verify JWT token
+  const user = verifyAuthToken(request)
+  if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  const supabase = createClient()
 
   const body = await request.json()
   
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
   const { data: existingScores } = await supabase
     .from('chess_scores')
     .select('wins, losses, draws')
-    .eq('user_id', user.id)
+    .eq('user_id', user.userId)
     .single()
 
   if (existingScores) {
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
     const { data: updatedScores, error } = await supabase
       .from('chess_scores')
       .update(mergedScores)
-      .eq('user_id', user.id)
+      .eq('user_id', user.userId)
       .select()
       .single()
 
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
     const { data: newScores, error } = await supabase
       .from('chess_scores')
       .insert({
-        user_id: user.id,
+        user_id: user.userId,
         wins,
         losses,
         draws
