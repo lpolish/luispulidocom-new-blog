@@ -51,8 +51,26 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
           setMessage('Check your email for verification link!')
         }
       } else if (mode === 'reset') {
-        // Redirect to the reset password page
-        window.location.href = '/auth/reset-password'
+        // Send password reset email
+        try {
+          const response = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          })
+
+          const data = await response.json()
+
+          if (!response.ok) {
+            setError(data.error || 'Failed to send reset email')
+          } else {
+            setMessage('Password reset email sent! Check your inbox.')
+          }
+        } catch (error) {
+          setError('Failed to send reset email. Please try again.')
+        }
         return
       }
     } finally {
